@@ -56,10 +56,6 @@
 
 /* Responsive design for smaller screens */
 @media (max-width: 600px) {
-  .bottom-navbar {
-    height: 70px;
-    padding: 0 8px;
-  }
 
   .nav-item {
     min-width: 50px;
