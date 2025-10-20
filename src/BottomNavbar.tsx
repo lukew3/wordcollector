@@ -2,14 +2,12 @@ import React, { useState } from 'react'
 import './BottomNavbar.css'
 
 interface BottomNavbarProps {
+  activeTab?: string
   onNavItemClick?: (item: string) => void
 }
 
-const BottomNavbar: React.FC<BottomNavbarProps> = ({ onNavItemClick }) => {
-  const [activeTab, setActiveTab] = useState<string>('history')
-
+const BottomNavbar: React.FC<BottomNavbarProps> = ({ activeTab = 'history', onNavItemClick }) => {
   const handleNavClick = (item: string) => {
-    setActiveTab(item)
     if (onNavItemClick) {
       onNavItemClick(item)
     }

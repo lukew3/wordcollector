@@ -275,10 +275,21 @@ function App() {
     setWordTitle('')
     setInfo('')
     setError('')
-    setActiveTab('search')
+    setActiveTab('history')
   }
 
   const handleNavItemClick = (item: string): void => {
+    // Clear all query parameters from URL
+    const url = new URL(window.location.href)
+    url.searchParams.delete('word')
+    window.history.pushState({}, '', url.toString())
+
+    // Clear search state when switching tabs
+    setQuery('')
+    setDefinitions([])
+    setWordTitle('')
+    setInfo('')
+    setError('')
     setActiveTab(item)
   }
 
@@ -356,8 +367,8 @@ function App() {
         })}
       </div>
 
-      {/* Show search history when no results and no active search */}
-      {activeTab === 'search' && !wordTitle && definitions.length === 0 && !isLoading && (
+      {/* Show search history when history tab is active */}
+      {activeTab === 'history' && (
         <SearchHistory onWordClick={(word) => {
           // Update URL with query parameter
           const url = new URL(window.location.href)
@@ -384,7 +395,7 @@ function App() {
         }} />
       )}
 
-      <BottomNavbar onNavItemClick={handleNavItemClick} />
+      <BottomNavbar activeTab={activeTab} onNavItemClick={handleNavItemClick} />
     </div>
   )
 }

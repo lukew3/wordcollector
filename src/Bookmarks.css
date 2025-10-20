@@ -1,14 +1,11 @@
 .bookmarks {
   margin-top: 18px;
-  padding: 16px;
-  background-color: #a0855f;
-  border-radius: 10px;
 }
 
 .bookmarks-empty {
   text-align: center;
   padding: 40px 20px;
-  color: #D3BF95;
+  color: #000;
 }
 
 .bookmarks-empty i {
@@ -36,14 +33,14 @@
 
 .bookmarks-header h3 {
   margin: 0;
-  color: #D3BF95;
+  color: #000;
   font-size: 1.1rem;
 }
 
 .clear-bookmarks-btn {
-  background: none;
-  border: 1px solid #D3BF95;
-  color: #D3BF95;
+  background-color: #D3BF95;
+  border: 1px solid #000;
+  color: #000;
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
@@ -52,8 +49,7 @@
 }
 
 .clear-bookmarks-btn:hover {
-  background-color: #D3BF95;
-  color: #000000;
+  background-color: #c4a876;
 }
 
 .bookmarks-list {
@@ -63,10 +59,9 @@
 }
 
 .bookmark-item {
-  background-color: rgba(211, 191, 149, 0.1);
-  border: 1px solid rgba(211, 191, 149, 0.2);
-  border-radius: 8px;
-  padding: 12px;
+  background-color: #a0855f;
+  border-radius: 6px;
+  padding: 10px 12px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -76,8 +71,7 @@
 }
 
 .bookmark-item:hover {
-  background-color: rgba(211, 191, 149, 0.15);
-  border-color: rgba(211, 191, 149, 0.3);
+  background-color: #b0956f;
 }
 
 .bookmark-content {
@@ -86,13 +80,13 @@
 
 .bookmark-word {
   font-size: 1rem;
-  color: #D3BF95;
+  color: #000;
   margin-bottom: 4px;
 }
 
 .bookmark-pos {
   font-size: 0.9rem;
-  color: #D3BF95;
+  color: #000;
   opacity: 0.8;
   margin-bottom: 6px;
   font-style: italic;
@@ -100,7 +94,7 @@
 
 .bookmark-definition {
   font-size: 0.95rem;
-  color: #D3BF95;
+  color: #000;
   line-height: 1.4;
 }
 
@@ -114,14 +108,14 @@
 
 .bookmark-timestamp {
   font-size: 0.8rem;
-  color: #D3BF95;
+  color: #000;
   opacity: 0.6;
 }
 
 .remove-bookmark-btn {
   background: none;
   border: none;
-  color: #D3BF95;
+  color: #000;
   opacity: 0.6;
   padding: 4px;
   border-radius: 50%;
@@ -136,5 +130,5 @@
 
 .remove-bookmark-btn:hover {
   opacity: 1;
-  background-color: rgba(211, 191, 149, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
 }

@@ -98,7 +98,7 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
           className="clear-history-btn"
           title="Clear search history"
         >
-          Clear
+          Clear All
         </button>
       </div>
       <div className="search-history-list">

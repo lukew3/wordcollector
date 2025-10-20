@@ -1,5 +1,8 @@
 /* Search History Component Styles */
 
+.search-history {
+ margin-top: 18px;
+}
 
 .search-history-header {
   display: flex;
@@ -17,8 +20,8 @@
   background-color: #D3BF95;
   border: 1px solid #000;
   border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 0.8rem;
+  padding: 6px 12px;
+  font-size: 0.9rem;
   cursor: pointer;
   color: #000;
 }
