@@ -1,3 +1,5 @@
+@import './colors.css';
+
 .bookmarks {
   margin-top: 18px;
 }
@@ -5,7 +7,7 @@
 .bookmarks-empty {
   text-align: center;
   padding: 40px 20px;
-  color: #000;
+  color: var(--color-text-main);
 }
 
 .bookmarks-empty i {
@@ -38,9 +40,9 @@
 }
 
 .clear-bookmarks-btn {
-  background-color: #D3BF95;
-  border: 1px solid #000;
-  color: #000;
+  background-color: var(--color-bg-button);
+  border: 1px solid var(--color-neutral-border);
+  color: var(--color-text-main);
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
@@ -49,7 +51,7 @@
 }
 
 .clear-bookmarks-btn:hover {
-  background-color: #c4a876;
+  background-color: var(--color-hover-bg);
 }
 
 .bookmarks-list {
@@ -59,8 +61,8 @@
 }
 
 .bookmark-item {
-   background-color: #917d61;
-   border-radius: 6px;
+  background-color: var(--color-bg-card);
+  border-radius: 6px;
   padding: 10px 12px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -71,7 +73,7 @@
 }
 
 .bookmark-item:hover {
-  background-color: #b0956f;
+  background-color: var(--color-secondary-card-hover);
 }
 
 .bookmark-content {
@@ -80,13 +82,13 @@
 
 .bookmark-word {
   font-size: 1rem;
-  color: #000;
+  color: var(--color-text-main);
   margin-bottom: 4px;
 }
 
 .bookmark-pos {
   font-size: 0.9rem;
-  color: #000;
+  color: var(--color-text-main);
   opacity: 0.8;
   margin-bottom: 6px;
   font-style: italic;
@@ -94,7 +96,7 @@
 
 .bookmark-definition {
   font-size: 0.95rem;
-  color: #000;
+  color: var(--color-text-main);
   line-height: 1.4;
 }
 
@@ -108,14 +110,14 @@
 
 .bookmark-timestamp {
   font-size: 0.8rem;
-  color: #000;
+  color: var(--color-text-main);
   opacity: 0.6;
 }
 
 .remove-bookmark-btn {
   background: none;
   border: none;
-  color: #000;
+  color: var(--color-text-main);
   opacity: 0.6;
   padding: 4px;
   border-radius: 50%;
@@ -130,5 +132,5 @@
 
 .remove-bookmark-btn:hover {
   opacity: 1;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--color-hover-overlay);
 }

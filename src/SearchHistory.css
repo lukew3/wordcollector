@@ -1,8 +1,10 @@
+@import './colors.css';
+
 /* Search History Component Styles */
 
 .search-history {
- margin-top: 18px;
-}
+  margin-top: 18px;
+ }
 
 .search-history-header {
   display: flex;
@@ -17,17 +19,17 @@
 }
 
 .clear-history-btn {
-  background-color: #D3BF95;
-  border: 1px solid #000;
+  background-color: var(--color-bg-button);
+  border: 1px solid var(--color-neutral-border);
   border-radius: 4px;
   padding: 6px 12px;
   font-size: 0.9rem;
   cursor: pointer;
-  color: #000;
+  color: var(--color-text-main);
 }
 
 .clear-history-btn:hover {
-  background-color: #c4a876;
+   background-color: var(--color-hover-bg);
 }
 
 .search-history-list {
@@ -37,8 +39,8 @@
 }
 
 .search-history-item {
-   background-color: #917d61;
-   padding: 10px 12px;
+  background-color: var(--color-bg-card);
+  padding: 10px 12px;
   border-radius: 6px;
   display: flex;
   justify-content: space-between;
@@ -48,7 +50,7 @@
 }
 
 .search-history-item:hover {
-  background-color: #b0956f;
+  background-color: var(--color-secondary-card-hover);
 }
 
 .history-word {
