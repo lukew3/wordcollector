@@ -111,9 +111,9 @@ nav {
 }
 
 .defItem {
-  margin: 0;
-  background-color: #a0855f;
-  padding: 15px;
+   margin: 0;
+   background-color: #917d61;
+   padding: 15px;
   border-radius: 10px;
   display: flex;
   justify-content: space-between;

@@ -59,8 +59,8 @@
 }
 
 .bookmark-item {
-  background-color: #a0855f;
-  border-radius: 6px;
+   background-color: #917d61;
+   border-radius: 6px;
   padding: 10px 12px;
   cursor: pointer;
   transition: all 0.2s ease;
