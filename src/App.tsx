@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import initSqlJs from 'sql.js'
 import './App.css'
 import SearchHistory from './SearchHistory'
+import BottomNavbar from './BottomNavbar'
 
 interface Definition {
   word: string
@@ -213,6 +214,11 @@ function App() {
           performSearch(word)
         }} />
       )}
+
+      <BottomNavbar onNavItemClick={(item) => {
+        console.log('Navbar item clicked:', item)
+        // Handle navbar item clicks here
+      }} />
     </div>
   )
 }
