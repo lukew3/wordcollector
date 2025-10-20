@@ -116,7 +116,45 @@ nav {
   padding: 15px;
   border-radius: 10px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.defContent {
+  display: flex;
   gap: 5px;
+  flex: 1;
+  align-items: flex-start;
+}
+
+.defNumber {
+  flex-shrink: 0;
+}
+
+.defText {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.bookmarkBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+.bookmarkBtn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #333333;
 }
 
 .progress-container {

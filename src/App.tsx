@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import initSqlJs from 'sql.js'
 import './App.css'
 import SearchHistory from './SearchHistory'
+import Bookmarks from './Bookmarks'
 import BottomNavbar from './BottomNavbar'
 
 interface Definition {
@@ -30,9 +31,46 @@ function App() {
   const [db, setDb] = useState<Database | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [progress, setProgress] = useState<number>(0)
+  const [bookmarkedDefinitions, setBookmarkedDefinitions] = useState<Set<string>>(new Set())
+  const [activeTab, setActiveTab] = useState<string>('search')
+
+  const toggleBookmark = (word: string, pos: string, definition: string): void => {
+    const definitionKey = `${word}-${pos}-${definition}`
+
+    setBookmarkedDefinitions(prev => {
+      const newBookmarks = new Set(prev)
+      if (newBookmarks.has(definitionKey)) {
+        // Remove from bookmarks
+        newBookmarks.delete(definitionKey)
+        removeFromBookmarksStorage(word, pos, definition)
+      } else {
+        // Add to bookmarks
+        newBookmarks.add(definitionKey)
+        addToBookmarksStorage(word, pos, definition)
+      }
+      return newBookmarks
+    })
+  }
+
+  const getBookmarkIcon = (isBookmarked: boolean): string => {
+    return isBookmarked ? 'fas fa-bookmark' : 'far fa-bookmark'
+  }
 
   useEffect(() => {
     loadDatabase()
+    loadBookmarkedDefinitions()
+  }, [])
+
+  // Listen for storage changes to keep bookmarkedDefinitions in sync
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'definitionBookmarks' || e.key === null) {
+        loadBookmarkedDefinitions()
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
   }, [])
 
   useEffect(() => {
@@ -96,6 +134,87 @@ function App() {
     }
   }
 
+  const loadBookmarkedDefinitions = (): void => {
+    try {
+      const stored = localStorage.getItem('definitionBookmarks')
+      if (stored) {
+        const bookmarks = JSON.parse(stored) as Array<{word: string, pos: string, definition: string}>
+        const bookmarkedKeys = new Set(bookmarks.map(b => `${b.word}-${b.pos}-${b.definition}`))
+        setBookmarkedDefinitions(bookmarkedKeys)
+      }
+    } catch (error) {
+      console.error('Error loading bookmarked definitions:', error)
+    }
+  }
+
+  const addToBookmarksStorage = (word: string, pos: string, definition: string): void => {
+    try {
+      const newItem = {
+        word: word.toLowerCase(),
+        pos,
+        definition,
+        timestamp: new Date().toISOString()
+      }
+
+      const stored = localStorage.getItem('definitionBookmarks')
+      let currentBookmarks: Array<{word: string, pos: string, definition: string, timestamp: string}> = []
+
+      if (stored) {
+        currentBookmarks = JSON.parse(stored)
+      }
+
+      // Remove duplicates (same word, pos, and definition)
+      const filteredBookmarks = currentBookmarks.filter(item =>
+        !(item.word === word.toLowerCase() && item.pos === pos && item.definition === definition)
+      )
+
+      // Add new item at the beginning
+      const updatedBookmarks = [newItem, ...filteredBookmarks]
+
+      // Keep only the last 100 bookmarks
+      const trimmedBookmarks = updatedBookmarks.slice(0, 100)
+
+      localStorage.setItem('definitionBookmarks', JSON.stringify(trimmedBookmarks))
+      loadBookmarkedDefinitions() // Reload to update the display
+    } catch (error) {
+      console.error('Error saving to bookmarks:', error)
+    }
+  }
+
+  const removeFromBookmarksStorage = (word: string, pos: string, definition: string): void => {
+    try {
+      const stored = localStorage.getItem('definitionBookmarks')
+      if (stored) {
+        const currentBookmarks = JSON.parse(stored) as Array<{word: string, pos: string, definition: string, timestamp: string}>
+        const filteredBookmarks = currentBookmarks.filter(item =>
+          !(item.word === word.toLowerCase() && item.pos === pos && item.definition === definition)
+        )
+
+        localStorage.setItem('definitionBookmarks', JSON.stringify(filteredBookmarks))
+        loadBookmarkedDefinitions() // Reload to update the display
+      }
+    } catch (error) {
+      console.error('Error removing from bookmarks:', error)
+    }
+  }
+
+  const clearAllBookmarksStorage = (): void => {
+    try {
+      localStorage.removeItem('definitionBookmarks')
+      setBookmarkedDefinitions(new Set())
+    } catch (error) {
+      console.error('Error clearing bookmarks:', error)
+    }
+  }
+
+  // Expose functions globally for Bookmarks component to use
+  useEffect(() => {
+    ;(window as any).clearAllBookmarks = clearAllBookmarksStorage
+    return () => {
+      delete (window as any).clearAllBookmarks
+    }
+  }, [])
+
   const performSearch = async (searchQuery: string): Promise<void> => {
     if (!db || !searchQuery.trim()) return
 
@@ -156,6 +275,11 @@ function App() {
     setWordTitle('')
     setInfo('')
     setError('')
+    setActiveTab('search')
+  }
+
+  const handleNavItemClick = (item: string): void => {
+    setActiveTab(item)
   }
 
   const escapeHtml = (str: string | null | undefined): string => {
@@ -210,16 +334,30 @@ function App() {
 
       {wordTitle && <h2>{wordTitle}</h2>}
       <div id="definitionList" aria-live="polite">
-        {definitions.map((def, index) => (
-          <div className="defItem" key={index}>
-            <div>{index + 1})</div>
-            <div><strong>{def.pos}.</strong> {escapeHtml(def.definition)}</div>
-          </div>
-        ))}
+        {definitions.map((def, index) => {
+          const definitionKey = `${def.word}-${def.pos}-${def.definition}`
+          const isBookmarked = bookmarkedDefinitions.has(definitionKey)
+
+          return (
+            <div className="defItem" key={index}>
+              <div className="defContent">
+                <div className="defNumber">{index + 1})</div>
+                <div className="defText"><strong>{def.pos}.</strong> {escapeHtml(def.definition)}</div>
+              </div>
+              <button
+                className="bookmarkBtn"
+                onClick={() => toggleBookmark(def.word, def.pos, def.definition)}
+                aria-label={isBookmarked ? "Remove bookmark" : "Add bookmark"}
+              >
+                <i className={getBookmarkIcon(isBookmarked)}></i>
+              </button>
+            </div>
+          )
+        })}
       </div>
 
       {/* Show search history when no results and no active search */}
-      {!wordTitle && definitions.length === 0 && !isLoading && (
+      {activeTab === 'search' && !wordTitle && definitions.length === 0 && !isLoading && (
         <SearchHistory onWordClick={(word) => {
           // Update URL with query parameter
           const url = new URL(window.location.href)
@@ -228,13 +366,25 @@ function App() {
 
           setQuery(word)
           performSearch(word)
+          setActiveTab('search')
         }} />
       )}
 
-      <BottomNavbar onNavItemClick={(item) => {
-        console.log('Navbar item clicked:', item)
-        // Handle navbar item clicks here
-      }} />
+      {/* Show bookmarks when bookmarks tab is active */}
+      {activeTab === 'bookmarks' && (
+        <Bookmarks onWordClick={(word) => {
+          // Update URL with query parameter
+          const url = new URL(window.location.href)
+          url.searchParams.set('word', word)
+          window.history.pushState({}, '', url.toString())
+
+          setQuery(word)
+          performSearch(word)
+          setActiveTab('search')
+        }} />
+      )}
+
+      <BottomNavbar onNavItemClick={handleNavItemClick} />
     </div>
   )
 }

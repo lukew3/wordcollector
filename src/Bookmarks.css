@@ -1,0 +1,140 @@
+.bookmarks {
+  margin-top: 18px;
+  padding: 16px;
+  background-color: #a0855f;
+  border-radius: 10px;
+}
+
+.bookmarks-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #D3BF95;
+}
+
+.bookmarks-empty i {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.bookmarks-empty p {
+  margin: 8px 0;
+  font-size: 1rem;
+}
+
+.bookmarks-hint {
+  font-size: 0.9rem !important;
+  opacity: 0.8;
+}
+
+.bookmarks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.bookmarks-header h3 {
+  margin: 0;
+  color: #D3BF95;
+  font-size: 1.1rem;
+}
+
+.clear-bookmarks-btn {
+  background: none;
+  border: 1px solid #D3BF95;
+  color: #D3BF95;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.clear-bookmarks-btn:hover {
+  background-color: #D3BF95;
+  color: #000000;
+}
+
+.bookmarks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bookmark-item {
+  background-color: rgba(211, 191, 149, 0.1);
+  border: 1px solid rgba(211, 191, 149, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.bookmark-item:hover {
+  background-color: rgba(211, 191, 149, 0.15);
+  border-color: rgba(211, 191, 149, 0.3);
+}
+
+.bookmark-content {
+  flex: 1;
+}
+
+.bookmark-word {
+  font-size: 1rem;
+  color: #D3BF95;
+  margin-bottom: 4px;
+}
+
+.bookmark-pos {
+  font-size: 0.9rem;
+  color: #D3BF95;
+  opacity: 0.8;
+  margin-bottom: 6px;
+  font-style: italic;
+}
+
+.bookmark-definition {
+  font-size: 0.95rem;
+  color: #D3BF95;
+  line-height: 1.4;
+}
+
+.bookmark-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.bookmark-timestamp {
+  font-size: 0.8rem;
+  color: #D3BF95;
+  opacity: 0.6;
+}
+
+.remove-bookmark-btn {
+  background: none;
+  border: none;
+  color: #D3BF95;
+  opacity: 0.6;
+  padding: 4px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-bookmark-btn:hover {
+  opacity: 1;
+  background-color: rgba(211, 191, 149, 0.2);
+}

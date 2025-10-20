@@ -18,13 +18,13 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({ onNavItemClick }) => {
   return (
     <nav className="bottom-navbar">
       <div
-        className={`nav-item ${activeTab === 'favorites' ? 'active' : ''}`}
-        onClick={() => handleNavClick('favorites')}
+        className={`nav-item ${activeTab === 'bookmarks' ? 'active' : ''}`}
+        onClick={() => handleNavClick('bookmarks')}
       >
         <div className="nav-icon">
-          <i className="fas fa-star"></i>
+          <i className="fas fa-bookmark"></i>
         </div>
-        <div className="nav-label">Favorites</div>
+        <div className="nav-label">Bookmarks</div>
       </div>
       <div
         className={`nav-item ${activeTab === 'history' ? 'active' : ''}`}
