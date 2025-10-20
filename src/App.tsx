@@ -171,7 +171,18 @@ function App() {
   return (
     <div className="container">
       <nav>
-        <h1 id="navTitle" onClick={handleNavTitleClick} style={{cursor: 'pointer'}}>Offline Dictionary</h1>
+        <div className="nav-content">
+          <a
+            href="https://github.com/lukew3/aard2-web-offline"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="github-link"
+            aria-label="View on GitHub"
+          >
+            <i className="fab fa-github"></i>
+          </a>
+          <h1 id="navTitle" onClick={handleNavTitleClick} style={{cursor: 'pointer'}}>Offline Dictionary</h1>
+        </div>
       </nav>
 
       <form onSubmit={handleSearch}>
@@ -210,6 +221,11 @@ function App() {
       {/* Show search history when no results and no active search */}
       {!wordTitle && definitions.length === 0 && !isLoading && (
         <SearchHistory onWordClick={(word) => {
+          // Update URL with query parameter
+          const url = new URL(window.location.href)
+          url.searchParams.set('word', word)
+          window.history.pushState({}, '', url.toString())
+
           setQuery(word)
           performSearch(word)
         }} />

@@ -52,8 +52,38 @@ nav {
   justify-content: center;
 }
 
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+.github-link {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000000;
+  font-size: 1.5rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.github-link:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 #navTitle {
   text-align: center;
+  margin: 0;
 }
 
 #definitionList {
