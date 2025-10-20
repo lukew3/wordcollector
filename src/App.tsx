@@ -32,7 +32,7 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [progress, setProgress] = useState<number>(0)
   const [bookmarkedDefinitions, setBookmarkedDefinitions] = useState<Set<string>>(new Set())
-  const [activeTab, setActiveTab] = useState<string>('search')
+  const [activeTab, setActiveTab] = useState<string>('history')
 
   const toggleBookmark = (word: string, pos: string, definition: string): void => {
     const definitionKey = `${word}-${pos}-${definition}`
@@ -222,6 +222,7 @@ function App() {
     setDefinitions([])
     setWordTitle('')
     setInfo('Searching...')
+    setActiveTab('search')
 
     try {
       const tableName = 'words'
