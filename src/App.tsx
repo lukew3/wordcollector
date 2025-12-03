@@ -4,6 +4,7 @@ import './App.css'
 import SearchHistory from './SearchHistory'
 import Bookmarks from './Bookmarks'
 import BottomNavbar from './BottomNavbar'
+import Settings from './Settings'
 
 interface Definition {
   word: string
@@ -318,6 +319,13 @@ function App() {
             <i className="fab fa-github"></i>
           </a>
           <h1 id="navTitle" onClick={handleNavTitleClick} style={{cursor: 'pointer'}}>Offline Dictionary</h1>
+          <button
+            className="settings-icon"
+            onClick={() => setActiveTab('settings')}
+            aria-label="Settings"
+          >
+            <i className="fas fa-cog"></i>
+          </button>
         </div>
       </nav>
 
@@ -395,6 +403,9 @@ function App() {
           setActiveTab('search')
         }} />
       )}
+
+      {/* Show settings when settings tab is active */}
+      {activeTab === 'settings' && <Settings />}
 
       <BottomNavbar activeTab={activeTab} onNavItemClick={handleNavItemClick} />
     </div>

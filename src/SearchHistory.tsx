@@ -93,13 +93,6 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
     <div className="search-history">
       <div className="search-history-header">
         <h3>Recent Searches</h3>
-        <button
-          onClick={clearHistory}
-          className="clear-history-btn"
-          title="Clear search history"
-        >
-          Clear All
-        </button>
       </div>
       <div className="search-history-list">
         {history.map((item, index) => (

@@ -18,19 +18,6 @@
   font-size: 1.1rem;
 }
 
-.clear-history-btn {
-  background-color: var(--color-bg-button);
-  border: 1px solid var(--color-neutral-border);
-  border-radius: 4px;
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  color: var(--color-text-main);
-}
-
-.clear-history-btn:hover {
-   background-color: var(--color-hover-bg);
-}
 
 .search-history-list {
   display: flex;

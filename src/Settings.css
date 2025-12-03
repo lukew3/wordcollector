@@ -1,0 +1,33 @@
+@import './colors.css';
+
+/* Settings Component Styles */
+
+.settings {
+  margin-top: 18px;
+}
+
+.settings h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+}
+
+.settings-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-btn {
+  background-color: var(--color-bg-button);
+  border: 1px solid var(--color-neutral-border);
+  border-radius: 4px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--color-text-main);
+  transition: background-color 0.2s ease;
+}
+
+.settings-btn:hover {
+  background-color: var(--color-hover-bg);
+}

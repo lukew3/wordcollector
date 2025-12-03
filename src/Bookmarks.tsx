@@ -101,16 +101,6 @@ const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
     }
   }
 
-  const clearBookmarks = (): void => {
-    try {
-      if ((window as any).clearAllBookmarks) {
-        (window as any).clearAllBookmarks()
-      }
-      setBookmarks([])
-    } catch (error) {
-      console.error('Error clearing bookmarks:', error)
-    }
-  }
 
   const formatDateTime = (timestamp: string): string => {
     const date = new Date(timestamp)
@@ -143,13 +133,6 @@ const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
     <div className="bookmarks">
       <div className="bookmarks-header">
         <h3>Bookmarked Definitions</h3>
-        <button
-          onClick={clearBookmarks}
-          className="clear-bookmarks-btn"
-          title="Clear all bookmarks"
-        >
-          Clear All
-        </button>
       </div>
       <div className="bookmarks-list">
         {bookmarks.map((item, index) => (
