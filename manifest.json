@@ -1,6 +1,6 @@
 {
-  "name": "Offline Dictionary",
-  "short_name": "Dict",
+  "name": "Word Collector",
+  "short_name": "WordCollector",
   "description": "A limitless free dictionary in your browser, offline",
   "start_url": "/",
   "display": "standalone",
