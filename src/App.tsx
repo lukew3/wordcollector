@@ -318,7 +318,7 @@ function App() {
           >
             <i className="fab fa-github"></i>
           </a>
-          <h1 id="navTitle" onClick={handleNavTitleClick} style={{cursor: 'pointer'}}>Offline Dictionary</h1>
+          <h1 id="navTitle" onClick={handleNavTitleClick} style={{cursor: 'pointer'}}>Word Collector</h1>
           <button
             className="settings-icon"
             onClick={() => setActiveTab('settings')}

@@ -1,5 +1,5 @@
 {
-  "name": "aard2-web-offline",
+  "name": "wordcollector",
   "version": "1.0.0",
   "description": "A limitless free dictionary in your browser, offline",
   "type": "module",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lukew3/aard2-web-offline.git"
+    "url": "git+https://github.com/lukew3/wordcollector.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lukew3/aard2-web-offline/issues"
+    "url": "https://github.com/lukew3/wordcollector/issues"
   },
-  "homepage": "https://github.com/lukew3/aard2-web-offline#readme",
+  "homepage": "https://github.com/lukew3/wordcollector#readme",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
