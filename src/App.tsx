@@ -407,6 +407,13 @@ function App() {
       {/* Show settings when settings tab is active */}
       {activeTab === 'settings' && <Settings />}
 
+      {/* Show study placeholder when study tab is active */}
+      {activeTab === 'study' && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh', color: '#666', fontSize: '1.2em' }}>
+          Study mode coming soon...
+        </div>
+      )}
+
       <BottomNavbar activeTab={activeTab} onNavItemClick={handleNavItemClick} />
     </div>
   )
