@@ -27,6 +27,7 @@ function SearchBar({ db, isLoading, setError, setInfo, setActiveTab, setDefiniti
 
     setQuery(localQuery)
     await performSearch(localQuery, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
+    setLocalQuery('')
   }
 
   return (
