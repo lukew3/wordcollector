@@ -102,75 +102,19 @@ nav {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-#definitionList {
-  margin-top: 18px;
-  border-radius: 6px;
-  white-space: pre-wrap;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
 #error {
-   margin-top: 12px;
-   color: var(--color-error);
- }
+    margin-top: 12px;
+    color: var(--color-error);
+  }
 
 .meta {
-   font-size: 0.9rem;
-   color: var(--color-text-meta);
-   margin-top: 8px;
- }
+    font-size: 0.9rem;
+    color: var(--color-text-meta);
+    margin-top: 8px;
+  }
 
 .defH {
   margin: 0;
-}
-
-.defItem {
-    margin: 0;
-    background-color: var(--color-bg-card);
-    padding: 15px;
-   border-radius: 10px;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   gap: 12px;
- }
-
-.defContent {
-  display: flex;
-  gap: 5px;
-  flex: 1;
-  align-items: flex-start;
-}
-
-.defNumber {
-  flex-shrink: 0;
-}
-
-.defText {
-  flex: 1;
-  line-height: 1.4;
-}
-
-.bookmarkBtn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000000;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-  font-size: 1.1rem;
-}
-
-.bookmarkBtn:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: #333333;
 }
 
 .progress-container {

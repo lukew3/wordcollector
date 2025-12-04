@@ -63,15 +63,6 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
     }
   }
 
-  const clearHistory = (): void => {
-    try {
-      localStorage.removeItem('searchHistory')
-      setHistory([])
-    } catch (error) {
-      console.error('Error clearing search history:', error)
-    }
-  }
-
   const formatDateTime = (timestamp: string): string => {
     const date = new Date(timestamp)
     return date.toLocaleString()
@@ -95,7 +86,7 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
         <h3>Recent Searches</h3>
       </div>
       <div className="search-history-list">
-        {history.map((item, index) => (
+        {history.map((item) => (
           <div
             key={`${item.word}-${item.timestamp}`}
             className="search-history-item"

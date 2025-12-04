@@ -5,6 +5,7 @@ import SearchHistory from './SearchHistory'
 import Bookmarks from './Bookmarks'
 import BottomNavbar from './BottomNavbar'
 import Settings from './Settings'
+import QueryResults from './QueryResults'
 
 interface Definition {
   word: string
@@ -51,10 +52,6 @@ function App() {
       }
       return newBookmarks
     })
-  }
-
-  const getBookmarkIcon = (isBookmarked: boolean): string => {
-    return isBookmarked ? 'fas fa-bookmark' : 'far fa-bookmark'
   }
 
   useEffect(() => {
@@ -352,29 +349,15 @@ function App() {
       <div id="info">{info}</div>
       <div id="error" role="alert" aria-live="assertive">{error}</div>
 
-      {wordTitle && <h2>{wordTitle}</h2>}
-      <div id="definitionList" aria-live="polite">
-        {definitions.map((def, index) => {
-          const definitionKey = `${def.word}-${def.pos}-${def.definition}`
-          const isBookmarked = bookmarkedDefinitions.has(definitionKey)
-
-          return (
-            <div className="defItem" key={index}>
-              <div className="defContent">
-                <div className="defNumber">{index + 1})</div>
-                <div className="defText"><strong>{def.pos}.</strong> {escapeHtml(def.definition)}</div>
-              </div>
-              <button
-                className="bookmarkBtn"
-                onClick={() => toggleBookmark(def.word, def.pos, def.definition)}
-                aria-label={isBookmarked ? "Remove bookmark" : "Add bookmark"}
-              >
-                <i className={getBookmarkIcon(isBookmarked)}></i>
-              </button>
-            </div>
-          )
-        })}
-      </div>
+      {definitions.length > 0 && (
+        <QueryResults
+          definitions={definitions}
+          wordTitle={wordTitle}
+          bookmarkedDefinitions={bookmarkedDefinitions}
+          toggleBookmark={toggleBookmark}
+          escapeHtml={escapeHtml}
+        />
+      )}
 
       {/* Show search history when history tab is active */}
       {activeTab === 'history' && (
