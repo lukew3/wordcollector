@@ -1,6 +1,6 @@
 import React from 'react'
 import './QueryResults.css'
-import { Definition, Database, Statement, QueryResultsProps } from '../../interfaces'
+import { QueryResultsProps } from '../../interfaces'
 
 const QueryResults: React.FC<QueryResultsProps> = ({
   bookmarkedDefinitions,

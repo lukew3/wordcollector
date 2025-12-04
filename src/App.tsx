@@ -8,7 +8,7 @@ import Settings from './pages/Settings/Settings'
 import QueryResults from './pages/QueryResults/QueryResults'
 import { performSearch } from './searchUtils'
 
-import { Definition, Database, Statement } from './interfaces'
+import { Definition, Database } from './interfaces'
 
 function App() {
   const [query, setQuery] = useState<string>('')

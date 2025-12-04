@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import './Bookmarks.css'
 import { BookmarkedDefinition, BookmarksProps } from '../../interfaces'
 
