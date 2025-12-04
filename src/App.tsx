@@ -6,6 +6,7 @@ import Bookmarks from './pages/Bookmarks/Bookmarks'
 import BottomNavbar from './components/BottomNavbar/BottomNavbar'
 import Settings from './pages/Settings/Settings'
 import QueryResults from './pages/QueryResults/QueryResults'
+import SearchBar from './components/SearchBar/SearchBar'
 import { performSearch } from './searchUtils'
 
 import { Definition, Database } from './interfaces'
@@ -200,16 +201,9 @@ function App() {
   }, [])
 
 
-  const handleSearch = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    e.preventDefault()
-    if (!db || !query.trim()) return
-
-    // Update URL with query parameter
-    const url = new URL(window.location.href)
-    url.searchParams.set('word', query)
-    window.history.pushState({}, '', url.toString())
-
-    await performSearch(query, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
+  const handleSearch = async (searchQuery: string): Promise<void> => {
+    setQuery(searchQuery)
+    await performSearch(searchQuery, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
   }
 
   const handleNavTitleClick = (): void => {
@@ -276,16 +270,7 @@ function App() {
         </div>
       </nav>
 
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Enter exact word"
-          required
-        />
-        <button type="submit" disabled={isLoading}>Search</button>
-      </form>
+      <SearchBar db={db} onSearch={handleSearch} isLoading={isLoading} />
 
       {isLoading && (
         <div className="progress-container">

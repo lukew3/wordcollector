@@ -125,7 +125,7 @@ const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
         <h3>Bookmarked Definitions</h3>
       </div>
       <div className="bookmarks-list">
-        {bookmarks.map((item, index) => (
+        {bookmarks.map((item) => (
           <div
             key={`${item.word}-${item.pos}-${item.timestamp}`}
             className="bookmark-item"
