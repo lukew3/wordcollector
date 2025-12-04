@@ -1,5 +1,6 @@
 import React from 'react'
 import './Settings.css'
+import { clearAllBookmarks } from '../../bookmarkUtils'
 
 const Settings: React.FC = () => {
   const handleClearHistory = () => {
@@ -10,10 +11,8 @@ const Settings: React.FC = () => {
   }
 
   const handleClearBookmarks = () => {
-    if ((window as any).clearAllBookmarks) {
-      (window as any).clearAllBookmarks()
-      alert('Bookmarks cleared.')
-    }
+    clearAllBookmarks()
+    alert('Bookmarks cleared.')
   }
 
   return (

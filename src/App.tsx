@@ -20,43 +20,13 @@ function App() {
   const [db, setDb] = useState<Database | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [progress, setProgress] = useState<number>(0)
-  const [bookmarkedDefinitions, setBookmarkedDefinitions] = useState<Set<string>>(new Set())
   const [activeTab, setActiveTab] = useState<string>('history')
 
-  const toggleBookmark = (word: string, pos: string, definition: string): void => {
-    const definitionKey = `${word}-${pos}-${definition}`
-
-    setBookmarkedDefinitions(prev => {
-      const newBookmarks = new Set(prev)
-      if (newBookmarks.has(definitionKey)) {
-        // Remove from bookmarks
-        newBookmarks.delete(definitionKey)
-        removeFromBookmarksStorage(word, pos, definition)
-      } else {
-        // Add to bookmarks
-        newBookmarks.add(definitionKey)
-        addToBookmarksStorage(word, pos, definition)
-      }
-      return newBookmarks
-    })
-  }
 
   useEffect(() => {
     loadDatabase()
-    loadBookmarkedDefinitions()
   }, [])
 
-  // Listen for storage changes to keep bookmarkedDefinitions in sync
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'definitionBookmarks' || e.key === null) {
-        loadBookmarkedDefinitions()
-      }
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-    return () => window.removeEventListener('storage', handleStorageChange)
-  }, [])
 
   useEffect(() => {
     // Check for query parameter on page load
@@ -119,104 +89,6 @@ function App() {
     }
   }
 
-  const loadBookmarkedDefinitions = (): void => {
-    try {
-      const stored = localStorage.getItem('definitionBookmarks')
-      if (stored) {
-        const bookmarks = JSON.parse(stored) as Array<{word: string, pos: string, definition: string}>
-        const bookmarkedKeys = new Set(bookmarks.map(b => `${b.word}-${b.pos}-${b.definition}`))
-        setBookmarkedDefinitions(bookmarkedKeys)
-      }
-    } catch (error) {
-      console.error('Error loading bookmarked definitions:', error)
-    }
-  }
-
-  const addToBookmarksStorage = (word: string, pos: string, definition: string): void => {
-    try {
-      const newItem = {
-        word: word.toLowerCase(),
-        pos,
-        definition,
-        timestamp: new Date().toISOString()
-      }
-
-      const stored = localStorage.getItem('definitionBookmarks')
-      let currentBookmarks: Array<{word: string, pos: string, definition: string, timestamp: string}> = []
-
-      if (stored) {
-        currentBookmarks = JSON.parse(stored)
-      }
-
-      // Remove duplicates (same word, pos, and definition)
-      const filteredBookmarks = currentBookmarks.filter(item =>
-        !(item.word === word.toLowerCase() && item.pos === pos && item.definition === definition)
-      )
-
-      // Add new item at the beginning
-      const updatedBookmarks = [newItem, ...filteredBookmarks]
-
-      // Keep only the last 100 bookmarks
-      const trimmedBookmarks = updatedBookmarks.slice(0, 100)
-
-      localStorage.setItem('definitionBookmarks', JSON.stringify(trimmedBookmarks))
-      loadBookmarkedDefinitions() // Reload to update the display
-    } catch (error) {
-      console.error('Error saving to bookmarks:', error)
-    }
-  }
-
-  const removeFromBookmarksStorage = (word: string, pos: string, definition: string): void => {
-    try {
-      const stored = localStorage.getItem('definitionBookmarks')
-      if (stored) {
-        const currentBookmarks = JSON.parse(stored) as Array<{word: string, pos: string, definition: string, timestamp: string}>
-        const filteredBookmarks = currentBookmarks.filter(item =>
-          !(item.word === word.toLowerCase() && item.pos === pos && item.definition === definition)
-        )
-
-        localStorage.setItem('definitionBookmarks', JSON.stringify(filteredBookmarks))
-        loadBookmarkedDefinitions() // Reload to update the display
-      }
-    } catch (error) {
-      console.error('Error removing from bookmarks:', error)
-    }
-  }
-
-  const clearAllBookmarksStorage = (): void => {
-    try {
-      localStorage.removeItem('definitionBookmarks')
-      setBookmarkedDefinitions(new Set())
-    } catch (error) {
-      console.error('Error clearing bookmarks:', error)
-    }
-  }
-
-  // Expose functions globally for Bookmarks component to use
-  useEffect(() => {
-    ;(window as any).clearAllBookmarks = clearAllBookmarksStorage
-    return () => {
-      delete (window as any).clearAllBookmarks
-    }
-  }, [])
-
-
-
-  const handleNavTitleClick = (): void => {
-    // Clear all query parameters from URL
-    const url = new URL(window.location.href)
-    url.searchParams.delete('word')
-    window.history.pushState({}, '', url.toString())
-
-    // Clear search state
-    setQuery('')
-    setDefinitions([])
-    setWordTitle('')
-    setInfo('')
-    setError('')
-    setActiveTab('history')
-  }
-
   const handleNavItemClick = (item: string): void => {
     // Clear all query parameters from URL
     const url = new URL(window.location.href)
@@ -255,7 +127,7 @@ function App() {
           >
             <i className="fab fa-github"></i>
           </a>
-          <h1 id="navTitle" onClick={handleNavTitleClick} style={{cursor: 'pointer'}}>Word Collector</h1>
+          <h1 id="navTitle" onClick={() => handleNavItemClick('history')} style={{cursor: 'pointer'}}>Word Collector</h1>
           <button
             className="settings-icon"
             onClick={() => setActiveTab('settings')}
@@ -291,8 +163,6 @@ function App() {
 
       {activeTab === 'queryResults' && (
         <QueryResults
-          bookmarkedDefinitions={bookmarkedDefinitions}
-          toggleBookmark={toggleBookmark}
           escapeHtml={escapeHtml}
           definitions={definitions}
           wordTitle={wordTitle}

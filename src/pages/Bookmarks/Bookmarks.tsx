@@ -1,6 +1,7 @@
 import React from 'react'
 import './Bookmarks.css'
 import { BookmarkedDefinition, BookmarksProps } from '../../interfaces'
+import { addToBookmarks, removeFromBookmarks, loadBookmarkedDefinitions } from '../../bookmarkUtils'
 
 const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
   const [bookmarks, setBookmarks] = React.useState<BookmarkedDefinition[]>([])
@@ -40,72 +41,10 @@ const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
     }
   }
 
-  const addToBookmarks = (word: string, pos: string, definition: string): void => {
-    try {
-      const newItem: BookmarkedDefinition = {
-        word: word.toLowerCase(),
-        pos,
-        definition,
-        timestamp: new Date().toISOString()
-      }
-
-      const stored = localStorage.getItem('definitionBookmarks')
-      let currentBookmarks: BookmarkedDefinition[] = []
-
-      if (stored) {
-        currentBookmarks = JSON.parse(stored) as BookmarkedDefinition[]
-      }
-
-      // Remove duplicates (same word, pos, and definition)
-      const filteredBookmarks = currentBookmarks.filter(item =>
-        !(item.word === word.toLowerCase() && item.pos === pos && item.definition === definition)
-      )
-
-      // Add new item at the beginning
-      const updatedBookmarks = [newItem, ...filteredBookmarks]
-
-      // Keep only the last 100 bookmarks
-      const trimmedBookmarks = updatedBookmarks.slice(0, 100)
-
-      localStorage.setItem('definitionBookmarks', JSON.stringify(trimmedBookmarks))
-      loadBookmarks() // Reload to update the display
-    } catch (error) {
-      console.error('Error saving to bookmarks:', error)
-    }
-  }
-
-  const removeFromBookmarks = (word: string, pos: string, definition: string): void => {
-    try {
-      const stored = localStorage.getItem('definitionBookmarks')
-      if (stored) {
-        const currentBookmarks = JSON.parse(stored) as BookmarkedDefinition[]
-        const filteredBookmarks = currentBookmarks.filter(item =>
-          !(item.word === word.toLowerCase() && item.pos === pos && item.definition === definition)
-        )
-
-        localStorage.setItem('definitionBookmarks', JSON.stringify(filteredBookmarks))
-        loadBookmarks() // Reload to update the display
-      }
-    } catch (error) {
-      console.error('Error removing from bookmarks:', error)
-    }
-  }
-
-
   const formatDateTime = (timestamp: string): string => {
     const date = new Date(timestamp)
     return date.toLocaleString()
   }
-
-  // Expose functions globally for App.tsx to use
-  React.useEffect(() => {
-    ;(window as any).addToBookmarks = addToBookmarks
-    ;(window as any).removeFromBookmarks = removeFromBookmarks
-    return () => {
-      delete (window as any).addToBookmarks
-      delete (window as any).removeFromBookmarks
-    }
-  }, [])
 
   if (bookmarks.length === 0) {
     return (
@@ -144,6 +83,7 @@ const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
                 onClick={(e) => {
                   e.stopPropagation()
                   removeFromBookmarks(item.word, item.pos, item.definition)
+                  loadBookmarks()
                 }}
                 className="remove-bookmark-btn"
                 title="Remove bookmark"

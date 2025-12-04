@@ -41,8 +41,6 @@ export interface BookmarksProps {
 }
 
 export interface QueryResultsProps {
-  bookmarkedDefinitions: Set<string>
-  toggleBookmark: (word: string, pos: string, definition: string) => void
   escapeHtml: (str: string | null | undefined) => string
   definitions: Definition[]
   wordTitle: string
