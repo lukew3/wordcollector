@@ -41,16 +41,9 @@ export interface BookmarksProps {
 }
 
 export interface QueryResultsProps {
-  db: Database | null
-  query: string
-  setQuery: (query: string) => void
-  setInfo: (info: string) => void
-  setError: (error: string) => void
-  setActiveTab: (tab: string) => void
   bookmarkedDefinitions: Set<string>
   toggleBookmark: (word: string, pos: string, definition: string) => void
   escapeHtml: (str: string | null | undefined) => string
-  isLoading: boolean
   definitions: Definition[]
   wordTitle: string
 }

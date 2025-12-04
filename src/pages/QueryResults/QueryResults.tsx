@@ -3,16 +3,9 @@ import './QueryResults.css'
 import { Definition, Database, Statement, QueryResultsProps } from '../../interfaces'
 
 const QueryResults: React.FC<QueryResultsProps> = ({
-  db,
-  query,
-  setQuery,
-  setInfo,
-  setError,
-  setActiveTab,
   bookmarkedDefinitions,
   toggleBookmark,
   escapeHtml,
-  isLoading,
   definitions,
   wordTitle
 }) => {

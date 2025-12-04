@@ -301,16 +301,9 @@ function App() {
 
       {activeTab === 'queryResults' && (
         <QueryResults
-          db={db}
-          query={query}
-          setQuery={setQuery}
-          setInfo={setInfo}
-          setError={setError}
-          setActiveTab={setActiveTab}
           bookmarkedDefinitions={bookmarkedDefinitions}
           toggleBookmark={toggleBookmark}
           escapeHtml={escapeHtml}
-          isLoading={isLoading}
           definitions={definitions}
           wordTitle={wordTitle}
         />
