@@ -1,27 +1,23 @@
 import React from 'react'
 import './QueryResults.css'
-
-interface Definition {
-  word: string
-  pos: string
-  definition: string
-}
-
-interface QueryResultsProps {
-  definitions: Definition[]
-  wordTitle: string
-  bookmarkedDefinitions: Set<string>
-  toggleBookmark: (word: string, pos: string, definition: string) => void
-  escapeHtml: (str: string | null | undefined) => string
-}
+import { Definition, Database, Statement, QueryResultsProps } from './interfaces'
 
 const QueryResults: React.FC<QueryResultsProps> = ({
-  definitions,
-  wordTitle,
+  db,
+  query,
+  setQuery,
+  setInfo,
+  setError,
+  setActiveTab,
   bookmarkedDefinitions,
   toggleBookmark,
-  escapeHtml
+  escapeHtml,
+  isLoading,
+  definitions,
+  wordTitle
 }) => {
+
+
   const getBookmarkIcon = (isBookmarked: boolean): string => {
     return isBookmarked ? 'fas fa-bookmark' : 'far fa-bookmark'
   }

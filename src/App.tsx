@@ -6,23 +6,9 @@ import Bookmarks from './Bookmarks'
 import BottomNavbar from './BottomNavbar'
 import Settings from './Settings'
 import QueryResults from './QueryResults'
+import { performSearch } from './searchUtils'
 
-interface Definition {
-  word: string
-  pos: string
-  definition: string
-}
-
-interface Database {
-  prepare: (sql: string) => Statement
-}
-
-interface Statement {
-  bind: (params: Record<string, any>) => void
-  step: () => boolean
-  getAsObject: () => Definition
-  reset: () => void
-}
+import { Definition, Database, Statement } from './interfaces'
 
 function App() {
   const [query, setQuery] = useState<string>('')
@@ -77,7 +63,7 @@ function App() {
     const searchWord = urlParams.get('word')
     if (searchWord && db && !isLoading) {
       setQuery(searchWord)
-      performSearch(searchWord)
+      performSearch(searchWord, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
     }
   }, [db, isLoading])
 
@@ -213,42 +199,6 @@ function App() {
     }
   }, [])
 
-  const performSearch = async (searchQuery: string): Promise<void> => {
-    if (!db || !searchQuery.trim()) return
-
-    setError('')
-    setDefinitions([])
-    setWordTitle('')
-    setInfo('Searching...')
-    setActiveTab('search')
-
-    try {
-      const tableName = 'words'
-      const stmtExact = db.prepare(`SELECT word, pos, definition FROM "${tableName}" WHERE lower(word) = $w;`)
-
-      const rows: Definition[] = []
-      stmtExact.bind({$w: searchQuery.toLowerCase()})
-      while(stmtExact.step()){
-        const row = stmtExact.getAsObject() as unknown as Definition
-        rows.push(row)
-      }
-      stmtExact.reset()
-
-      setDefinitions(rows)
-      setWordTitle(searchQuery)
-      setInfo('')
-      if(rows.length === 0) setInfo('No definitions found')
-
-      // Add search to history
-      if ((window as any).addToSearchHistory) {
-        (window as any).addToSearchHistory(searchQuery)
-      }
-    } catch(err){
-      console.error(err)
-      setError('Search error: ' + (err as Error).message)
-      setInfo('')
-    }
-  }
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
@@ -259,7 +209,7 @@ function App() {
     url.searchParams.set('word', query)
     window.history.pushState({}, '', url.toString())
 
-    await performSearch(query)
+    await performSearch(query, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
   }
 
   const handleNavTitleClick = (): void => {
@@ -349,13 +299,20 @@ function App() {
       <div id="info">{info}</div>
       <div id="error" role="alert" aria-live="assertive">{error}</div>
 
-      {definitions.length > 0 && (
+      {activeTab === 'queryResults' && (
         <QueryResults
-          definitions={definitions}
-          wordTitle={wordTitle}
+          db={db}
+          query={query}
+          setQuery={setQuery}
+          setInfo={setInfo}
+          setError={setError}
+          setActiveTab={setActiveTab}
           bookmarkedDefinitions={bookmarkedDefinitions}
           toggleBookmark={toggleBookmark}
           escapeHtml={escapeHtml}
+          isLoading={isLoading}
+          definitions={definitions}
+          wordTitle={wordTitle}
         />
       )}
 
@@ -368,8 +325,7 @@ function App() {
           window.history.pushState({}, '', url.toString())
 
           setQuery(word)
-          performSearch(word)
-          setActiveTab('search')
+          performSearch(word, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
         }} />
       )}
 
@@ -382,8 +338,7 @@ function App() {
           window.history.pushState({}, '', url.toString())
 
           setQuery(word)
-          performSearch(word)
-          setActiveTab('search')
+          performSearch(word, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
         }} />
       )}
 
