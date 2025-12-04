@@ -1,2 +1,2 @@
-# aard2-web-offline
-A limitless free dictionary in your browser, offline
+# wordcollector
+A free and offline dictionary in your browser
