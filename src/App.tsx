@@ -201,10 +201,6 @@ function App() {
   }, [])
 
 
-  const handleSearch = async (searchQuery: string): Promise<void> => {
-    setQuery(searchQuery)
-    await performSearch(searchQuery, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
-  }
 
   const handleNavTitleClick = (): void => {
     // Clear all query parameters from URL
@@ -270,7 +266,16 @@ function App() {
         </div>
       </nav>
 
-      <SearchBar db={db} onSearch={handleSearch} isLoading={isLoading} />
+      <SearchBar
+        db={db}
+        isLoading={isLoading}
+        setError={setError}
+        setInfo={setInfo}
+        setActiveTab={setActiveTab}
+        setDefinitions={setDefinitions}
+        setWordTitle={setWordTitle}
+        setQuery={setQuery}
+      />
 
       {isLoading && (
         <div className="progress-container">
