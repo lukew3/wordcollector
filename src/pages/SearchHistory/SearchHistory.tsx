@@ -1,6 +1,6 @@
 import React from 'react'
 import './SearchHistory.css'
-import { SearchHistoryItem, SearchHistoryProps } from './interfaces'
+import { SearchHistoryItem, SearchHistoryProps } from '../../interfaces'
 
 const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
   const [history, setHistory] = React.useState<SearchHistoryItem[]>([])

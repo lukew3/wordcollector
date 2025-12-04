@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import './Bookmarks.css'
-import { BookmarkedDefinition, BookmarksProps } from './interfaces'
+import { BookmarkedDefinition, BookmarksProps } from '../../interfaces'
 
 const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
   const [bookmarks, setBookmarks] = React.useState<BookmarkedDefinition[]>([])

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import initSqlJs from 'sql.js'
 import './App.css'
-import SearchHistory from './SearchHistory'
-import Bookmarks from './Bookmarks'
-import BottomNavbar from './BottomNavbar'
-import Settings from './Settings'
-import QueryResults from './QueryResults'
+import SearchHistory from './pages/SearchHistory/SearchHistory'
+import Bookmarks from './pages/Bookmarks/Bookmarks'
+import BottomNavbar from './components/BottomNavbar/BottomNavbar'
+import Settings from './pages/Settings/Settings'
+import QueryResults from './pages/QueryResults/QueryResults'
 import { performSearch } from './searchUtils'
 
 import { Definition, Database, Statement } from './interfaces'
@@ -318,7 +318,7 @@ function App() {
 
       {/* Show search history when history tab is active */}
       {activeTab === 'history' && (
-        <SearchHistory onWordClick={(word) => {
+        <SearchHistory onWordClick={(word: string) => {
           // Update URL with query parameter
           const url = new URL(window.location.href)
           url.searchParams.set('word', word)
@@ -331,7 +331,7 @@ function App() {
 
       {/* Show bookmarks when bookmarks tab is active */}
       {activeTab === 'bookmarks' && (
-        <Bookmarks onWordClick={(word) => {
+        <Bookmarks onWordClick={(word: string) => {
           // Update URL with query parameter
           const url = new URL(window.location.href)
           url.searchParams.set('word', word)

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './BottomNavbar.css'
-import { BottomNavbarProps } from './interfaces'
+import { BottomNavbarProps } from '../../interfaces'
 
 const BottomNavbar: React.FC<BottomNavbarProps> = ({ activeTab = 'history', onNavItemClick }) => {
   const handleNavClick = (item: string) => {
