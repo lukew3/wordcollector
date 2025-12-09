@@ -12,7 +12,6 @@ import { performSearch } from './searchUtils'
 import { Definition, Database } from './interfaces'
 
 function App() {
-  const [query, setQuery] = useState<string>('')
   const [info, setInfo] = useState<string>('Loading database...')
   const [error, setError] = useState<string>('')
   const [definitions, setDefinitions] = useState<Definition[]>([])
@@ -84,7 +83,6 @@ function App() {
     window.history.pushState({}, '', url.toString())
 
     // Clear search state when switching tabs
-    setQuery('')
     setDefinitions([])
     setWordTitle('')
     setInfo('')
@@ -134,7 +132,6 @@ function App() {
         setActiveTab={setActiveTab}
         setDefinitions={setDefinitions}
         setWordTitle={setWordTitle}
-        setQuery={setQuery}
       />
 
       {isLoading && (
@@ -177,7 +174,6 @@ function App() {
           url.searchParams.set('word', word)
           window.history.pushState({}, '', url.toString())
 
-          setQuery(word)
           performSearch(word, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
         }} />
       )}

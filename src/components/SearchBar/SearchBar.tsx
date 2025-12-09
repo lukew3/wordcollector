@@ -12,10 +12,9 @@ interface SearchBarProps {
   setActiveTab: (tab: string) => void
   setDefinitions: (definitions: Definition[]) => void
   setWordTitle: (title: string) => void
-  setQuery: (query: string) => void
 }
 
-function SearchBar({ db, isLoading, setError, setInfo, setActiveTab, setDefinitions, setWordTitle, setQuery }: SearchBarProps) {
+function SearchBar({ db, isLoading, setError, setInfo, setActiveTab, setDefinitions, setWordTitle }: SearchBarProps) {
   const [localQuery, setLocalQuery] = useState<string>('')
   const [history, setHistory] = useAtom(historyAtom);
   
@@ -24,7 +23,6 @@ function SearchBar({ db, isLoading, setError, setInfo, setActiveTab, setDefiniti
     const urlParams = new URLSearchParams(window.location.search)
     const searchWord = urlParams.get('word')
     if (searchWord && db && !isLoading) {
-      setQuery(searchWord)
       performSearch(searchWord, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle, history, setHistory)
     }
   }, [db, isLoading])
@@ -38,7 +36,6 @@ function SearchBar({ db, isLoading, setError, setInfo, setActiveTab, setDefiniti
     url.searchParams.set('word', localQuery)
     window.history.pushState({}, '', url.toString())
 
-    setQuery(localQuery)
     await performSearch(
       localQuery,
       db,
