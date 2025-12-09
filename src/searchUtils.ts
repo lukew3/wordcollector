@@ -1,4 +1,4 @@
-import { Definition, Database, Statement } from './interfaces'
+import { Definition, Database, SearchHistoryItem } from './interfaces'
 
 export const performSearch = async (
   searchQuery: string,
@@ -7,7 +7,9 @@ export const performSearch = async (
   setInfo: (info: string) => void,
   setActiveTab: (tab: string) => void,
   setDefinitions: (definitions: Definition[]) => void,
-  setWordTitle: (title: string) => void
+  setWordTitle: (title: string) => void,
+  history?: SearchHistoryItem[],
+  setHistory?: any
 ): Promise<void> => {
   if (!db || !searchQuery.trim()) return
 
@@ -34,11 +36,14 @@ export const performSearch = async (
     setInfo('')
     if (rows.length === 0) {
       setInfo('No definitions found')
-    } else {
-      // Add to search history if results were found
-      if ((window as any).addToSearchHistory) {
-        ;(window as any).addToSearchHistory(searchQuery)
+    } else if (history && setHistory) {
+      // Add to search history if results were found and history is available (search bar, not history tab)
+      const newHistoryItem: SearchHistoryItem = {
+        word: searchQuery,
+        timestamp: new Date().toISOString()
       }
+      const newHistory = [newHistoryItem, ...history];
+      setHistory(newHistory);
     }
   } catch(err){
     console.error(err)

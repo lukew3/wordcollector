@@ -22,21 +22,9 @@ function App() {
   const [progress, setProgress] = useState<number>(0)
   const [activeTab, setActiveTab] = useState<string>('history')
 
-
   useEffect(() => {
     loadDatabase()
   }, [])
-
-
-  useEffect(() => {
-    // Check for query parameter on page load
-    const urlParams = new URLSearchParams(window.location.search)
-    const searchWord = urlParams.get('word')
-    if (searchWord && db && !isLoading) {
-      setQuery(searchWord)
-      performSearch(searchWord, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
-    }
-  }, [db, isLoading])
 
   const loadDatabase = async (): Promise<void> => {
     try {
@@ -177,7 +165,6 @@ function App() {
           url.searchParams.set('word', word)
           window.history.pushState({}, '', url.toString())
 
-          setQuery(word)
           performSearch(word, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
         }} />
       )}

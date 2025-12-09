@@ -1,13 +1,15 @@
 import React from 'react'
 import './Settings.css'
 import { clearAllBookmarks } from '../../bookmarkUtils'
+import { useAtom } from 'jotai'
+import { historyAtom } from '../../atoms'
 
 const Settings: React.FC = () => {
+  const [_, setHistory] = useAtom(historyAtom)
+
   const handleClearHistory = () => {
-    if ((window as any).clearSearchHistory) {
-      (window as any).clearSearchHistory()
-      alert('Search history cleared.')
-    }
+    setHistory([])
+    alert('Search history cleared.')
   }
 
   const handleClearBookmarks = () => {

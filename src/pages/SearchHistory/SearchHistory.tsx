@@ -1,72 +1,16 @@
 import React from 'react'
 import './SearchHistory.css'
 import { SearchHistoryItem, SearchHistoryProps } from '../../interfaces'
+import { useAtom } from 'jotai'
+import { historyAtom } from '../../atoms'
 
 const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
-  const [history, setHistory] = React.useState<SearchHistoryItem[]>([])
-
-  React.useEffect(() => {
-    loadHistory()
-  }, [])
-
-  const loadHistory = (): void => {
-    try {
-      const stored = localStorage.getItem('searchHistory')
-      if (stored) {
-        const parsedHistory = JSON.parse(stored) as SearchHistoryItem[]
-        // Sort by timestamp descending (most recent first)
-        const sortedHistory = parsedHistory.sort((a, b) =>
-          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-        )
-        setHistory(sortedHistory)
-      }
-    } catch (error) {
-      console.error('Error loading search history:', error)
-    }
-  }
-
-  const addToHistory = (word: string): void => {
-    try {
-      const newItem: SearchHistoryItem = {
-        word: word.toLowerCase(),
-        timestamp: new Date().toISOString()
-      }
-
-      const stored = localStorage.getItem('searchHistory')
-      let currentHistory: SearchHistoryItem[] = []
-
-      if (stored) {
-        currentHistory = JSON.parse(stored) as SearchHistoryItem[]
-      }
-
-      // Remove duplicates (same word)
-      const filteredHistory = currentHistory.filter(item => item.word !== word.toLowerCase())
-
-      // Add new item at the beginning
-      const updatedHistory = [newItem, ...filteredHistory]
-
-      // Keep only the last 50 searches
-      const trimmedHistory = updatedHistory.slice(0, 50)
-
-      localStorage.setItem('searchHistory', JSON.stringify(trimmedHistory))
-      loadHistory() // Reload to update the display
-    } catch (error) {
-      console.error('Error saving to search history:', error)
-    }
-  }
+  const [history, _] = useAtom(historyAtom);
 
   const formatDateTime = (timestamp: string): string => {
     const date = new Date(timestamp)
     return date.toLocaleString()
   }
-
-  // Expose addToHistory function globally for App.tsx to use
-  React.useEffect(() => {
-    (window as any).addToSearchHistory = addToHistory
-    return () => {
-      delete (window as any).addToSearchHistory
-    }
-  }, [])
 
   if (history.length === 0) {
     return null
@@ -78,7 +22,7 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
         <h3>Recent Searches</h3>
       </div>
       <div className="search-history-list">
-        {history.map((item) => (
+        {history.map((item: SearchHistoryItem) => (
           <div
             key={`${item.word}-${item.timestamp}`}
             className="search-history-item"

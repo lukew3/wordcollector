@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Database, Definition } from '../../interfaces'
 import { performSearch } from '../../searchUtils'
+import { useAtom } from 'jotai'
+import { historyAtom } from '../../atoms'
 
 interface SearchBarProps {
   db: Database | null
@@ -15,6 +17,17 @@ interface SearchBarProps {
 
 function SearchBar({ db, isLoading, setError, setInfo, setActiveTab, setDefinitions, setWordTitle, setQuery }: SearchBarProps) {
   const [localQuery, setLocalQuery] = useState<string>('')
+  const [history, setHistory] = useAtom(historyAtom);
+  
+  useEffect(() => {
+    // Check for query parameter on page load
+    const urlParams = new URLSearchParams(window.location.search)
+    const searchWord = urlParams.get('word')
+    if (searchWord && db && !isLoading) {
+      setQuery(searchWord)
+      performSearch(searchWord, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle, history, setHistory)
+    }
+  }, [db, isLoading])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
@@ -26,7 +39,17 @@ function SearchBar({ db, isLoading, setError, setInfo, setActiveTab, setDefiniti
     window.history.pushState({}, '', url.toString())
 
     setQuery(localQuery)
-    await performSearch(localQuery, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
+    await performSearch(
+      localQuery,
+      db,
+      setError,
+      setInfo,
+      setActiveTab,
+      setDefinitions,
+      setWordTitle,
+      history,
+      setHistory
+    )
     setLocalQuery('')
   }
 
