@@ -21,7 +21,8 @@
   --color-text-subtle: #808080;        /* Very subtle text */
 
   /* Status Colors */
-  --color-success: #4caf50;            /* Success states, progress */
+  --color-success: #2e7d32;            /* Success states, progress - deeper green */
+  --color-success-light: #66bb6a;      /* Lighter success for gradients */
   --color-error: #b00020;              /* Error messages */
   --color-warning: #ff9800;            /* Warning states (if needed) */
 
