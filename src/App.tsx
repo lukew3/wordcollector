@@ -3,6 +3,7 @@ import initSqlJs from 'sql.js'
 import './App.css'
 import SearchHistory from './pages/SearchHistory/SearchHistory'
 import Bookmarks from './pages/Bookmarks/Bookmarks'
+import Study from './pages/Study/Study'
 import BottomNavbar from './components/BottomNavbar/BottomNavbar'
 import Settings from './pages/Settings/Settings'
 import QueryResults from './pages/QueryResults/QueryResults'
@@ -209,12 +210,8 @@ function App() {
       {/* Show settings when settings tab is active */}
       {activeTab === 'settings' && <Settings />}
 
-      {/* Show study placeholder when study tab is active */}
-      {activeTab === 'study' && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh', color: '#666', fontSize: '1.2em' }}>
-          Study mode coming soon...
-        </div>
-      )}
+      {/* Show study when study tab is active */}
+      {activeTab === 'study' && <Study />}
 
       <BottomNavbar activeTab={activeTab} onNavItemClick={handleNavItemClick} />
     </div>

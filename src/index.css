@@ -1,11 +1,17 @@
 @import './colors.css';
 
 * {
- font-family: "JetBrains Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 12px;
+  padding: 12px;
   background-color: var(--color-bg-body);
 }
 
