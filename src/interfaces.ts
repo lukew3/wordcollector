@@ -19,22 +19,3 @@ export interface SearchHistoryItem {
   word: string
   timestamp: string
 }
-
-export interface BottomNavbarProps {
-  activeTab?: string
-  onNavItemClick: (item: string) => void
-}
-
-export interface SearchHistoryProps {
-  onWordClick: (word: string) => void
-}
-
-export interface BookmarksProps {
-  onWordClick: (word: string) => void
-}
-
-export interface QueryResultsProps {
-  escapeHtml: (str: string | null | undefined) => string
-  definitions: Definition[]
-  wordTitle: string
-}

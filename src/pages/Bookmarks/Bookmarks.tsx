@@ -1,8 +1,11 @@
 import React from 'react'
 import './Bookmarks.css'
-import { BookmarksProps } from '../../interfaces'
 import { useAtom } from 'jotai'
 import { bookmarksAtom } from '../../atoms'
+
+interface BookmarksProps {
+  onWordClick: (word: string) => void
+}
 
 
 const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
@@ -64,7 +67,7 @@ const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
                 onClick={(e) => {
                   e.stopPropagation()
                   removeFromBookmarks(item.word, item.definition)
-v                }}
+                }}
                 className="remove-bookmark-btn"
                 title="Remove bookmark"
               >

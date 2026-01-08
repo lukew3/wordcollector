@@ -1,8 +1,12 @@
 import React from 'react'
 import './SearchHistory.css'
-import { SearchHistoryItem, SearchHistoryProps } from '../../interfaces'
+import { SearchHistoryItem } from '../../interfaces'
 import { useAtom } from 'jotai'
 import { historyAtom } from '../../atoms'
+
+interface SearchHistoryProps {
+  onWordClick: (word: string) => void
+}
 
 const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
   const [history, _] = useAtom(historyAtom);

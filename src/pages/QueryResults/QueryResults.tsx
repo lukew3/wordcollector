@@ -1,6 +1,12 @@
 import './QueryResults.css'
-import { QueryResultsProps } from '../../interfaces'
+import { Definition } from '../../interfaces'
 import DefinitionComponent from '../../components/Definition/Definition'
+
+interface QueryResultsProps {
+  escapeHtml: (str: string | null | undefined) => string
+  definitions: Definition[]
+  wordTitle: string
+}
 
 const QueryResults = ({
   escapeHtml,
