@@ -84,3 +84,41 @@ export const addBookmark = (bookmarks: Record<string, string[]>, word: string, d
 export const checkBookmarked = (bookmarks: Record<string, string[]>, word: string, definition: string) => {
   return bookmarks[word] && bookmarks[word].includes(definition)
 }
+
+export const getDefinitionsForWord = (db: Database | null, word: string): Definition[] => {
+  if (!db) return []
+  
+  try {
+    const stmt = db.prepare(`SELECT word, pos, definition FROM "words" WHERE lower(word) = $w;`)
+    const rows: Definition[] = []
+    stmt.bind({$w: word.toLowerCase()})
+    while(stmt.step()){
+      const row = stmt.getAsObject() as unknown as Definition
+      rows.push(row)
+    }
+    stmt.reset()
+    return rows
+  } catch(err) {
+    console.error('Error fetching definitions for word:', word, err)
+    return []
+  }
+}
+
+export const getRandomWords = (db: Database | null, count: number = 50): Definition[] => {
+  if (!db) return []
+  
+  try {
+    const stmt = db.prepare(`SELECT word, pos, definition FROM "words" ORDER BY RANDOM() LIMIT ?;`)
+    const rows: Definition[] = []
+    stmt.bind([count])
+    while(stmt.step()){
+      const row = stmt.getAsObject() as unknown as Definition
+      rows.push(row)
+    }
+    stmt.reset()
+    return rows
+  } catch(err) {
+    console.error('Error fetching random words:', err)
+    return []
+  }
+}

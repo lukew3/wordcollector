@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react'
 import './Study.css'
 import { useAtom } from 'jotai'
 import { historyAtom } from '../../atoms'
-import { Definition } from '../../interfaces'
+import { Definition, Database } from '../../interfaces'
+import { getDefinitionsForWord, getRandomWords } from '../../utils'
 
-const Study: React.FC = () => {
+interface StudyProps {
+  db: Database | null
+}
+
+const Study: React.FC<StudyProps> = ({ db }) => {
   const [history] = useAtom(historyAtom)
   const [showWordFirst, setShowWordFirst] = useState(true)
   const [useHistory, setUseHistory] = useState(true)
@@ -13,32 +18,28 @@ const Study: React.FC = () => {
   const [allWords, setAllWords] = useState<Definition[]>([])
   const [touchStart, setTouchStart] = useState<number | null>(null)
 
-  // Sample words for random mode (in real app, these would come from database)
-  const sampleWords: Definition[] = [
-    { word: 'ephemeral', pos: 'adj.', definition: 'lasting for a very short time' },
-    { word: 'ubiquitous', pos: 'adj.', definition: 'present, appearing, or found everywhere' },
-    { word: 'enigmatic', pos: 'adj.', definition: 'difficult to interpret or understand; mysterious' },
-    { word: 'serendipity', pos: 'n.', definition: 'the occurrence of events by chance in a happy way' },
-    { word: 'ephemeral', pos: 'adj.', definition: 'lasting for a very short time' }
-  ]
-
   useEffect(() => {
-    // In a real implementation, you would fetch all words from the database
-    // For now, using sample words
-    setAllWords(sampleWords)
+    // Load random words from database for random mode
+    const randomWords = getRandomWords(db, 100)
+    setAllWords(randomWords)
     loadNextCard()
-  }, [useHistory, history])
+  }, [useHistory, history, db])
 
   const loadNextCard = () => {
     let wordsToUse: Definition[] = []
     
     if (useHistory && history.length > 0) {
-      // Convert history items to Definition format (simplified)
-      wordsToUse = history.map(item => ({
-        word: item.word,
-        pos: 'n.',
-        definition: 'Definition would be fetched from database'
-      }))
+      // Get actual definitions for history words
+      const historyWords: Definition[] = []
+      history.forEach(item => {
+        const definitions = getDefinitionsForWord(db, item.word)
+        if (definitions.length > 0) {
+          // Select a random definition for this word
+          const randomDefinition = definitions[Math.floor(Math.random() * definitions.length)]
+          historyWords.push(randomDefinition)
+        }
+      })
+      wordsToUse = historyWords
     } else {
       wordsToUse = allWords
     }

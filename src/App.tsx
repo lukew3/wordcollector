@@ -211,7 +211,7 @@ function App() {
       {activeTab === 'settings' && <Settings />}
 
       {/* Show study when study tab is active */}
-      {activeTab === 'study' && <Study />}
+      {activeTab === 'study' && <Study db={db} />}
 
       <BottomNavbar activeTab={activeTab} onNavItemClick={handleNavItemClick} />
     </div>
