@@ -7,7 +7,7 @@ import BottomNavbar from './components/BottomNavbar/BottomNavbar'
 import Settings from './pages/Settings/Settings'
 import QueryResults from './pages/QueryResults/QueryResults'
 import SearchBar from './components/SearchBar/SearchBar'
-import { performSearch } from './searchUtils'
+import { performSearch } from './utils'
 
 import { Definition, Database } from './interfaces'
 

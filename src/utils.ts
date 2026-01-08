@@ -1,4 +1,6 @@
+import { useAtom } from 'jotai'
 import { Definition, Database, SearchHistoryItem } from './interfaces'
+import { bookmarksAtom } from './atoms'
 
 export const performSearch = async (
   searchQuery: string,
@@ -50,4 +52,35 @@ export const performSearch = async (
     setError('Search error: ' + (err as Error).message)
     setInfo('')
   }
+}
+
+export const removeBookmark = (bookmarks: Record<string, string[]>, word: string, definition: string) => {
+  // if word is found and definition is found in the word's bookmarks, update bookmarks with that entry removed
+  // if that was the words only entry, remove the word from bookmarks entirely
+  if (bookmarks[word] && bookmarks[word].includes(definition)) {
+    const newBookmarks = bookmarks[word].filter(def => def !== definition)
+    if (newBookmarks.length === 0) {
+      const { [word]: _, ...rest } = bookmarks
+      return rest;
+    } else {
+      return {
+        ...bookmarks,
+        [word]: newBookmarks
+      }
+    }
+  } else {
+    console.error('Bookmark not found')
+  }
+  return bookmarks
+}
+
+export const addBookmark = (bookmarks: Record<string, string[]>, word: string, definition: string) => {
+  return {
+    ...bookmarks,
+    [word]: [...(bookmarks[word] || []), definition]
+  }
+}
+
+export const checkBookmarked = (bookmarks: Record<string, string[]>, word: string, definition: string) => {
+  return bookmarks[word] && bookmarks[word].includes(definition)
 }

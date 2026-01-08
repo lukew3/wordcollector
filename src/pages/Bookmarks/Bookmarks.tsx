@@ -1,52 +1,20 @@
 import React from 'react'
 import './Bookmarks.css'
-import { BookmarkedDefinition, BookmarksProps } from '../../interfaces'
-import { addToBookmarks, removeFromBookmarks, loadBookmarkedDefinitions } from '../../bookmarkUtils'
+import { BookmarksProps } from '../../interfaces'
+import { useAtom } from 'jotai'
+import { bookmarksAtom } from '../../atoms'
+
 
 const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
-  const [bookmarks, setBookmarks] = React.useState<BookmarkedDefinition[]>([])
-
-  React.useEffect(() => {
-    loadBookmarks()
-  }, [])
-
-  // Listen for storage changes to update bookmarks when they're modified elsewhere
-  React.useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'definitionBookmarks' || e.key === null) {
-        loadBookmarks()
-      }
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-    return () => window.removeEventListener('storage', handleStorageChange)
-  }, [])
-
-  const loadBookmarks = (): void => {
-    try {
-      const stored = localStorage.getItem('definitionBookmarks')
-      if (stored) {
-        const parsedBookmarks = JSON.parse(stored) as BookmarkedDefinition[]
-        // Sort by timestamp descending (most recent first)
-        const sortedBookmarks = parsedBookmarks.sort((a, b) =>
-          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-        )
-        setBookmarks(sortedBookmarks)
-      } else {
-        setBookmarks([])
-      }
-    } catch (error) {
-      console.error('Error loading bookmarks:', error)
-      setBookmarks([])
-    }
-  }
+  const [bookmarks, setBookmarks] = useAtom(bookmarksAtom)
 
   const formatDateTime = (timestamp: string): string => {
     const date = new Date(timestamp)
     return date.toLocaleString()
   }
 
-  if (bookmarks.length === 0) {
+
+  if (!bookmarks) {
     return (
       <div className="bookmarks">
         <div className="bookmarks-empty">
@@ -64,7 +32,7 @@ const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
         <h3>Bookmarked Definitions</h3>
       </div>
       <div className="bookmarks-list">
-        {bookmarks.map((item) => (
+        {bookmarks.map((item: BookmarkedDefinition) => (
           <div
             key={`${item.word}-${item.pos}-${item.timestamp}`}
             className="bookmark-item"
@@ -83,7 +51,6 @@ const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
                 onClick={(e) => {
                   e.stopPropagation()
                   removeFromBookmarks(item.word, item.pos, item.definition)
-                  loadBookmarks()
                 }}
                 className="remove-bookmark-btn"
                 title="Remove bookmark"

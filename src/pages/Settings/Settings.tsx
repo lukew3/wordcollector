@@ -1,11 +1,11 @@
 import React from 'react'
 import './Settings.css'
-import { clearAllBookmarks } from '../../bookmarkUtils'
 import { useAtom } from 'jotai'
-import { historyAtom } from '../../atoms'
+import { historyAtom, bookmarksAtom } from '../../atoms'
 
 const Settings: React.FC = () => {
   const [_, setHistory] = useAtom(historyAtom)
+  const [__, setBookmarks] = useAtom(bookmarksAtom)
 
   const handleClearHistory = () => {
     setHistory([])
@@ -13,7 +13,7 @@ const Settings: React.FC = () => {
   }
 
   const handleClearBookmarks = () => {
-    clearAllBookmarks()
+    setBookmarks([])
     alert('Bookmarks cleared.')
   }
 

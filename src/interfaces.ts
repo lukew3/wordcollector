@@ -20,13 +20,6 @@ export interface SearchHistoryItem {
   timestamp: string
 }
 
-export interface BookmarkedDefinition {
-  word: string
-  pos: string
-  definition: string
-  timestamp: string
-}
-
 export interface BottomNavbarProps {
   activeTab?: string
   onNavItemClick: (item: string) => void

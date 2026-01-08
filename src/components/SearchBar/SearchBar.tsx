@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Database, Definition } from '../../interfaces'
-import { performSearch } from '../../searchUtils'
+import { performSearch } from '../../utils'
 import { useAtom } from 'jotai'
 import { historyAtom } from '../../atoms'
 
