@@ -27,46 +27,74 @@ function App() {
 
   const loadDatabase = async (): Promise<void> => {
     try {
-      setInfo('Fetching wordnet.db...')
+      setInfo('Initializing SQL.js...')
       setIsLoading(true)
       setProgress(0)
 
       const SQL = await initSqlJs({
-        // Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
-        // You can omit locateFile completely when running in node
         locateFile: (file: string) => `https://sql.js.org/dist/${file}`
       })
 
-      const res = await fetch('wordnetFull.db')
-      if (!res.ok) throw new Error('Failed to fetch wordnet.db: ' + res.status)
+      setInfo('Loading database from cache...')
+      setProgress(10)
 
-      const contentLength = res.headers.get('content-length')
-      const total = contentLength ? parseInt(contentLength, 10) : 0
-      let loaded = 0
+      let buffer: Uint8Array
+      let fromCache = false
 
-      const reader = res.body!.getReader()
-      const chunks: Uint8Array[] = []
+      try {
+        const cacheResponse = await caches.match('wordnetFull.db')
+        if (cacheResponse) {
+          setInfo('Loading database from service worker cache...')
+          const cachedArrayBuffer = await cacheResponse.arrayBuffer()
+          const tempBuffer = new Uint8Array(cachedArrayBuffer)
+          buffer = new Uint8Array(tempBuffer.length)
+          buffer.set(tempBuffer)
+          fromCache = true
+          setProgress(80)
+        } else {
+          throw new Error('Database not in cache')
+        }
+      } catch (cacheError) {
+        setInfo('Database not cached, fetching from network...')
+        setProgress(20)
 
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
+        const res = await fetch('wordnetFull.db')
+        if (!res.ok) throw new Error('Failed to fetch wordnet.db: ' + res.status)
 
-        chunks.push(value)
-        loaded += value.length
-        const percent = total > 0 ? Math.min((loaded / total) * 100, 100) : Math.min(loaded / 1000000 * 10, 90)
-        setProgress(percent)
+        const contentLength = res.headers.get('content-length')
+        const total = contentLength ? parseInt(contentLength, 10) : 0
+        let loaded = 0
+
+        const reader = res.body!.getReader()
+        const chunks: Uint8Array[] = []
+
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+
+          chunks.push(value)
+          loaded += value.length
+          const percent = total > 0 ? Math.min((loaded / total) * 60 + 20, 80) : Math.min(loaded / 1000000 * 10 + 20, 80)
+          setProgress(percent)
+        }
+
+        buffer = new Uint8Array(loaded)
+        let offset = 0
+        for (const chunk of chunks) {
+          buffer.set(chunk, offset)
+          offset += chunk.length
+        }
       }
 
-      const buffer = new Uint8Array(loaded)
-      let offset = 0
-      for (const chunk of chunks) {
-        buffer.set(chunk, offset)
-        offset += chunk.length
-      }
+      setInfo('Initializing database...')
+      setProgress(90)
 
-      const database = new SQL.Database(buffer)
+      const database = new SQL.Database(buffer as any)
       setDb(database as unknown as Database)
-      setInfo('Database loaded.')
+      
+      const cacheStatus = fromCache ? ' (from cache)' : ' (from network)'
+      setInfo(`Database loaded${cacheStatus}.`)
+      setProgress(100)
       setIsLoading(false)
     } catch (e) {
       setInfo('')
