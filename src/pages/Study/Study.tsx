@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import './Study.css'
 import { useAtom } from 'jotai'
 import { historyAtom } from '../../atoms'
@@ -11,9 +12,14 @@ interface StudyProps {
 }
 
 const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [history] = useAtom(historyAtom)
-  const [showWordFirst, setShowWordFirst] = useState(true)
-  const [useHistory, setUseHistory] = useState(true)
+  const [showWordFirst, setShowWordFirst] = useState(() => 
+    searchParams.get('showWordFirst') === 'true' ? true : searchParams.get('showWordFirst') === 'false' ? false : true
+  )
+  const [useHistory, setUseHistory] = useState(() => 
+    searchParams.get('useHistory') === 'true' ? true : searchParams.get('useHistory') === 'false' ? false : true
+  )
   const [currentCard, setCurrentCard] = useState<Definition | null>(null)
   const [isFlipped, setIsFlipped] = useState(false)
   const [allWords, setAllWords] = useState<Definition[]>([])
@@ -73,6 +79,20 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
     }
   }
 
+  const handleShowWordFirstChange = (value: boolean) => {
+    setShowWordFirst(value)
+    const newParams = new URLSearchParams(searchParams)
+    newParams.set('showWordFirst', value.toString())
+    setSearchParams(newParams)
+  }
+
+  const handleUseHistoryChange = (value: boolean) => {
+    setUseHistory(value)
+    const newParams = new URLSearchParams(searchParams)
+    newParams.set('useHistory', value.toString())
+    setSearchParams(newParams)
+  }
+
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart(e.targetTouches[0].clientX)
   }
@@ -102,7 +122,7 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
               <input
                 type="checkbox"
                 checked={showWordFirst}
-                onChange={(e) => setShowWordFirst(e.target.checked)}
+                onChange={(e) => handleShowWordFirstChange(e.target.checked)}
               />
               Show Word First
             </label>
@@ -110,7 +130,7 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
               <input
                 type="checkbox"
                 checked={useHistory}
-                onChange={(e) => setUseHistory(e.target.checked)}
+                onChange={(e) => handleUseHistoryChange(e.target.checked)}
               />
               Use History
             </label>
@@ -133,7 +153,7 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
               <input
                 type="checkbox"
                 checked={showWordFirst}
-                onChange={(e) => setShowWordFirst(e.target.checked)}
+                onChange={(e) => handleShowWordFirstChange(e.target.checked)}
               />
               <span className="slider"></span>
             </label>
@@ -145,7 +165,7 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
               <input
                 type="checkbox"
                 checked={useHistory}
-                onChange={(e) => setUseHistory(e.target.checked)}
+                onChange={(e) => handleUseHistoryChange(e.target.checked)}
               />
               <span className="slider"></span>
             </label>

@@ -1,13 +1,10 @@
-import { useAtom } from 'jotai'
 import { Definition, Database, SearchHistoryItem } from './interfaces'
-import { bookmarksAtom } from './atoms'
 
 export const performSearch = async (
   searchQuery: string,
   db: Database | null,
   setError: (error: string) => void,
   setInfo: (info: string) => void,
-  setActiveTab: (tab: string) => void,
   setDefinitions: (definitions: Definition[]) => void,
   setWordTitle: (title: string) => void,
   history?: SearchHistoryItem[],
@@ -19,7 +16,7 @@ export const performSearch = async (
   setDefinitions([])
   setWordTitle('')
   setInfo('Searching...')
-  setActiveTab('queryResults')
+  // No longer need setActiveTab since we use React Router navigation
 
   try {
     const tableName = 'words'
