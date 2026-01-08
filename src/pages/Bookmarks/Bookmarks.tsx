@@ -8,13 +8,28 @@ import { bookmarksAtom } from '../../atoms'
 const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
   const [bookmarks, setBookmarks] = useAtom(bookmarksAtom)
 
-  const formatDateTime = (timestamp: string): string => {
-    const date = new Date(timestamp)
-    return date.toLocaleString()
+  const removeFromBookmarks = (word: string, definition: string) => {
+    setBookmarks(prev => {
+      const newBookmarks = { ...prev }
+      if (newBookmarks[word]) {
+        newBookmarks[word] = newBookmarks[word].filter(d => d !== definition)
+        if (newBookmarks[word].length === 0) {
+          delete newBookmarks[word]
+        }
+      }
+      return newBookmarks
+    })
   }
 
+  // Transform the bookmarks Record<string, string[]> into an array of mappable items
+  const bookmarkItems = Object.entries(bookmarks).flatMap(([word, definitions]) =>
+    definitions.map(definition => ({
+      word,
+      definition
+    }))
+  )
 
-  if (!bookmarks) {
+  if (bookmarkItems.length === 0) {
     return (
       <div className="bookmarks">
         <div className="bookmarks-empty">
@@ -32,9 +47,9 @@ const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
         <h3>Bookmarked Definitions</h3>
       </div>
       <div className="bookmarks-list">
-        {bookmarks.map((item: BookmarkedDefinition) => (
+        {bookmarkItems.map((item) => (
           <div
-            key={`${item.word}-${item.pos}-${item.timestamp}`}
+            key={`${item.word}-${item.definition}`}
             className="bookmark-item"
             onClick={() => onWordClick(item.word)}
           >
@@ -42,16 +57,14 @@ const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
               <div className="bookmark-word">
                 <strong>{item.word}</strong>
               </div>
-              <div className="bookmark-pos">{item.pos}</div>
               <div className="bookmark-definition">{item.definition}</div>
             </div>
             <div className="bookmark-actions">
-              <span className="bookmark-timestamp">{formatDateTime(item.timestamp)}</span>
               <button
                 onClick={(e) => {
                   e.stopPropagation()
-                  removeFromBookmarks(item.word, item.pos, item.definition)
-                }}
+                  removeFromBookmarks(item.word, item.definition)
+v                }}
                 className="remove-bookmark-btn"
                 title="Remove bookmark"
               >
