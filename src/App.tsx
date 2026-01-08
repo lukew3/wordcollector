@@ -211,7 +211,14 @@ function App() {
       {activeTab === 'settings' && <Settings />}
 
       {/* Show study when study tab is active */}
-      {activeTab === 'study' && <Study db={db} />}
+      {activeTab === 'study' && <Study db={db} onWordClick={(word: string) => {
+        // Update URL with query parameter
+        const url = new URL(window.location.href)
+        url.searchParams.set('word', word)
+        window.history.pushState({}, '', url.toString())
+
+        performSearch(word, db, setError, setInfo, setActiveTab, setDefinitions, setWordTitle)
+      }} />}
 
       <BottomNavbar activeTab={activeTab} onNavItemClick={handleNavItemClick} />
     </div>

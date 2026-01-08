@@ -7,9 +7,10 @@ import { getDefinitionsForWord, getRandomWords } from '../../utils'
 
 interface StudyProps {
   db: Database | null
+  onWordClick?: (word: string) => void
 }
 
-const Study: React.FC<StudyProps> = ({ db }) => {
+const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
   const [history] = useAtom(historyAtom)
   const [showWordFirst, setShowWordFirst] = useState(true)
   const [useHistory, setUseHistory] = useState(true)
@@ -64,6 +65,12 @@ const Study: React.FC<StudyProps> = ({ db }) => {
 
   const handleNext = () => {
     loadNextCard()
+  }
+
+  const handleExpand = () => {
+    if (currentCard && onWordClick) {
+      onWordClick(currentCard.word)
+    }
   }
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -182,6 +189,9 @@ const Study: React.FC<StudyProps> = ({ db }) => {
       </div>
 
       <div className="flashcard-controls">
+        <button className="control-button" onClick={handleExpand}>
+          Expand
+        </button>
         <button className="control-button" onClick={handleFlip}>
           Flip
         </button>
