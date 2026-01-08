@@ -30,7 +30,7 @@
 
 .toggle-option {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--color-text-muted);
   min-width: 80px;
   text-align: center;
 }
@@ -63,7 +63,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #cbb388;
   transition: .4s;
   border-radius: 34px;
 }
@@ -75,17 +75,19 @@
   width: 26px;
   left: 4px;
   bottom: 4px;
-  background-color: white;
+  background-color: var(--color-primary-accent);
   transition: .4s;
   border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 input:checked + .slider {
-  background-color: #667eea;
+  background-color: var(--color-primary-accent);
 }
 
 input:checked + .slider:before {
   transform: translateX(26px);
+  background-color: var(--color-bg-body);
 }
 
 .flashcard-container {
@@ -150,8 +152,8 @@ input:checked + .slider:before {
   justify-content: center;
   align-items: center;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--color-bg-card);
+  color: var(--color-text-primary);
 }
 
 .flashcard-back {
@@ -159,7 +161,8 @@ input:checked + .slider:before {
   -webkit-transform: rotateX(180deg);
   -moz-transform: rotateX(180deg);
   -ms-transform: rotateX(180deg);
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: var(--color-primary-button);
+  color: var(--color-text-primary);
 }
 
 .card-content {
@@ -199,17 +202,17 @@ input:checked + .slider:before {
 
 .control-button {
   padding: 0.75rem 2rem;
-  border: none;
+  border: 1px solid var(--color-neutral-border);
   border-radius: 8px;
-  background: #4CAF50;
-  color: white;
+  background: var(--color-bg-button);
+  color: var(--color-text-primary);
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.1s;
 }
 
 .control-button:hover {
-  background: #45a049;
+  background: var(--color-hover-bg);
 }
 
 .control-button:active {
@@ -221,7 +224,7 @@ input:checked + .slider:before {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #666;
+  color: var(--color-text-muted);
   font-size: 1.2rem;
 }
 
