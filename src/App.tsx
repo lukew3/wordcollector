@@ -13,8 +13,10 @@ import { performSearch } from './utils'
 import { Definition, Database } from './interfaces'
 
 function App() {
-  const [info, setInfo] = useState<string>('Loading database...')
+
+
   const [error, setError] = useState<string>('')
+  const [info, setInfo] = useState<string>('')
   const [definitions, setDefinitions] = useState<Definition[]>([])
   const [wordTitle, setWordTitle] = useState<string>('')
   const [db, setDb] = useState<Database | null>(null)
@@ -28,7 +30,6 @@ function App() {
 
   const loadDatabase = async (): Promise<void> => {
     try {
-      setInfo('Initializing SQL.js...')
       setIsLoading(true)
       setProgress(0)
 
@@ -36,27 +37,22 @@ function App() {
         locateFile: (file: string) => `https://sql.js.org/dist/${file}`
       })
 
-      setInfo('Loading database from cache...')
       setProgress(10)
 
       let buffer: Uint8Array
-      let fromCache = false
 
       try {
         const cacheResponse = await caches.match('wordnetFull.db')
         if (cacheResponse) {
-          setInfo('Loading database from service worker cache...')
           const cachedArrayBuffer = await cacheResponse.arrayBuffer()
           const tempBuffer = new Uint8Array(cachedArrayBuffer)
           buffer = new Uint8Array(tempBuffer.length)
           buffer.set(tempBuffer)
-          fromCache = true
           setProgress(80)
         } else {
           throw new Error('Database not in cache')
         }
       } catch (cacheError) {
-        setInfo('Database not cached, fetching from network...')
         setProgress(20)
 
         const res = await fetch('wordnetFull.db')
@@ -87,19 +83,15 @@ function App() {
         }
       }
 
-      setInfo('Initializing database...')
       setProgress(90)
 
       const database = new SQL.Database(buffer as any)
       setDb(database as unknown as Database)
       
-      const cacheStatus = fromCache ? ' (from cache)' : ' (from network)'
-      setInfo(`Database loaded${cacheStatus}.`)
       setProgress(100)
       setIsLoading(false)
     } catch (e) {
-      setInfo('')
-      setError('Error loading database: ' + (e as Error).message)
+      setError('Error loading database')
       setIsLoading(false)
       console.error(e)
     }
@@ -165,10 +157,7 @@ function App() {
 
       {isLoading && (
         <div className="progress-container">
-          <div className="progress-bar">
-            <div className="progress-fill" style={{width: `${progress}%`}}></div>
-          </div>
-          <div className="progress-text">{Math.round(progress)}%</div>
+          <div className="progress-text">Loading database ({Math.round(progress)}%)</div>
         </div>
       )}
 
