@@ -152,3 +152,7 @@ export const getRandomWords = (db: Database | null, count: number = 50): Definit
     return []
   }
 }
+
+export const formatWordForDisplay = (word: string): string => {
+  return word.replace(/_/g, ' ')
+}

@@ -2,6 +2,7 @@ import React from 'react'
 import './Bookmarks.css'
 import { useAtom } from 'jotai'
 import { bookmarksAtom } from '../../atoms'
+import { formatWordForDisplay } from '../../utils'
 
 interface BookmarksProps {
   onWordClick: (word: string) => void
@@ -58,7 +59,7 @@ const Bookmarks: React.FC<BookmarksProps> = ({ onWordClick }) => {
           >
             <div className="bookmark-content">
               <div className="bookmark-word">
-                <strong>{item.word}</strong>
+                <strong>{formatWordForDisplay(item.word)}</strong>
               </div>
               <div className="bookmark-definition">{item.definition}</div>
             </div>

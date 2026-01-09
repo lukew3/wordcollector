@@ -4,7 +4,7 @@ import './Study.css'
 import { useAtom } from 'jotai'
 import { historyAtom } from '../../atoms'
 import { Definition, Database } from '../../interfaces'
-import { getDefinitionsForWords, getRandomWords } from '../../utils'
+import { getDefinitionsForWords, getRandomWords, formatWordForDisplay } from '../../utils'
 
 interface StudyProps {
   db: Database | null
@@ -255,7 +255,7 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
           <div className="flashcard-face flashcard-front">
             {showWordFirst ? (
               <div className="card-content">
-                <h2 className="word">{currentCard.word}</h2>
+                <h2 className="word">{formatWordForDisplay(currentCard.word)}</h2>
                 <span className="pos">{currentCard.pos}</span>
               </div>
             ) : (
@@ -271,7 +271,7 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
               </div>
             ) : (
               <div className="card-content">
-                <h2 className="word">{currentCard.word}</h2>
+                <h2 className="word">{formatWordForDisplay(currentCard.word)}</h2>
                 <span className="pos">{currentCard.pos}</span>
               </div>
             )}

@@ -3,6 +3,7 @@ import './SearchHistory.css'
 import { SearchHistoryItem } from '../../interfaces'
 import { useAtom } from 'jotai'
 import { historyAtom } from '../../atoms'
+import { formatWordForDisplay } from '../../utils'
 
 interface SearchHistoryProps {
   onWordClick: (word: string) => void
@@ -32,7 +33,7 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
             className="search-history-item"
             onClick={() => onWordClick(item.word)}
           >
-            <span className="history-word">{item.word}</span>
+            <span className="history-word">{formatWordForDisplay(item.word)}</span>
             <span className="history-timestamp">{formatDateTime(item.timestamp)}</span>
           </div>
         ))}

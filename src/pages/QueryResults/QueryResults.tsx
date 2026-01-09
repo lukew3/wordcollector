@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import './QueryResults.css'
 import { Definition, Database } from '../../interfaces'
 import DefinitionComponent from '../../components/Definition/Definition'
-import { performSearch } from '../../utils'
+import { performSearch, formatWordForDisplay } from '../../utils'
 import { useAtom } from 'jotai'
 import { historyAtom } from '../../atoms'
 
@@ -42,7 +42,7 @@ const QueryResults = ({
     }
   }, [word, db])
 
-  const displayWord = word ? decodeURIComponent(word) : wordTitle
+  const displayWord = word ? formatWordForDisplay(decodeURIComponent(word)) : formatWordForDisplay(wordTitle)
 
   return (
     <>
