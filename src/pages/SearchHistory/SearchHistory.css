@@ -33,10 +33,18 @@
   align-items: center;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  gap: 8px;
 }
 
 .search-history-item:hover {
   background-color: var(--color-secondary-card-hover);
+}
+
+.history-icon {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  width: 16px;
+  text-align: center;
 }
 
 .history-word {

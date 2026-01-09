@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/lukew3/wordcollector#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.1.0",
     "cli-progress": "^3.12.0",
     "jotai": "^2.16.0",
     "react": "^18.2.0",

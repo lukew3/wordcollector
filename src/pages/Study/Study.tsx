@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import './Study.css'
 import { useAtom } from 'jotai'
 import { historyAtom } from '../../atoms'
-import { Definition, Database } from '../../interfaces'
+import { Definition, Database, SearchHistoryItem } from '../../interfaces'
 import { getDefinitionsForWords, getRandomWords, formatWordForDisplay } from '../../utils'
 
 interface StudyProps {
@@ -13,7 +13,8 @@ interface StudyProps {
 
 const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [history] = useAtom(historyAtom)
+  const navigate = useNavigate()
+  const [history, setHistory] = useAtom(historyAtom)
   const [showWordFirst, setShowWordFirst] = useState(() => 
     searchParams.get('showWordFirst') === 'true' ? true : searchParams.get('showWordFirst') === 'false' ? false : true
   )
@@ -99,8 +100,18 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
   }
 
   const handleExpand = () => {
-    if (currentCard && onWordClick) {
-      onWordClick(currentCard.word)
+    if (currentCard) {
+      // Add to history with 'book' category when expanding from study mode
+      const newHistoryItem: SearchHistoryItem = {
+        word: currentCard.word,
+        timestamp: new Date().toISOString(),
+        category: 'book'
+      }
+      const newHistory = [newHistoryItem, ...history]
+      setHistory(newHistory)
+      
+      // Navigate directly without calling onWordClick to avoid duplicate history entry
+      navigate(`/word/${encodeURIComponent(currentCard.word)}?category=book`)
     }
   }
 

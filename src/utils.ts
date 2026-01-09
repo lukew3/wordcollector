@@ -1,4 +1,4 @@
-import { Definition, Database, SearchHistoryItem } from './interfaces'
+import { Definition, Database, SearchHistoryItem, HistoryCategory } from './interfaces'
 
 export const performSearch = async (
   searchQuery: string,
@@ -8,7 +8,9 @@ export const performSearch = async (
   setDefinitions: (definitions: Definition[]) => void,
   setWordTitle: (title: string) => void,
   history?: SearchHistoryItem[],
-  setHistory?: any
+  setHistory?: any,
+  category?: HistoryCategory,
+  skipHistory?: boolean
 ): Promise<void> => {
   if (!db || !searchQuery.trim()) return
 
@@ -35,11 +37,12 @@ export const performSearch = async (
     setInfo('')
     if (rows.length === 0) {
       setInfo('No definitions found')
-    } else if (history && setHistory) {
+    } else if (history && setHistory && !skipHistory) {
       // Add to search history if results were found and history is available (search bar, not history tab)
       const newHistoryItem: SearchHistoryItem = {
         word: searchQuery,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        category: category || 'search'
       }
       const newHistory = [newHistoryItem, ...history];
       setHistory(newHistory);

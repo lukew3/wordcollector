@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import './QueryResults.css'
-import { Definition, Database } from '../../interfaces'
+import { Definition, Database, HistoryCategory } from '../../interfaces'
 import DefinitionComponent from '../../components/Definition/Definition'
 import { performSearch, formatWordForDisplay } from '../../utils'
 import { useAtom } from 'jotai'
@@ -29,18 +29,22 @@ const QueryResults = ({
   setWordTitle
 }: QueryResultsProps) => {
   const { word } = useParams<{ word: string }>()
+  const [searchParams] = useSearchParams()
   const [history, setHistory] = useAtom(historyAtom)
   const searchedWord = useRef<string | null>(null)
 
   useEffect(() => {
     const decodedWord = word ? decodeURIComponent(word) : null
+    const categoryParam = searchParams.get('category') as HistoryCategory | null
+    const skipHistoryParam = searchParams.get('skipHistory')
     
-    // Only search if we have a word, database, and haven't searched for this word yet
-    if (decodedWord && db && searchedWord.current !== decodedWord) {
-      searchedWord.current = decodedWord
-      performSearch(decodedWord, db, setError, setInfo, setDefinitions, setWordTitle, history, setHistory)
-    }
-  }, [word, db])
+      // Only search if we have a word, database, and haven't searched for this word yet
+      if (decodedWord && db && searchedWord.current !== decodedWord) {
+        searchedWord.current = decodedWord
+        const skipHistory = categoryParam === 'book' || skipHistoryParam === 'true' // Skip history creation when coming from study mode or history
+        performSearch(decodedWord, db, setError, setInfo, setDefinitions, setWordTitle, history, setHistory, categoryParam || 'search', skipHistory)
+      }
+  }, [word, db, searchParams])
 
   const displayWord = word ? formatWordForDisplay(decodeURIComponent(word)) : formatWordForDisplay(wordTitle)
 

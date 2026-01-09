@@ -1,12 +1,12 @@
 import React from 'react'
 import './SearchHistory.css'
-import { SearchHistoryItem } from '../../interfaces'
+import { SearchHistoryItem, HistoryCategory } from '../../interfaces'
 import { useAtom } from 'jotai'
 import { historyAtom } from '../../atoms'
 import { formatWordForDisplay } from '../../utils'
 
 interface SearchHistoryProps {
-  onWordClick: (word: string) => void
+  onWordClick: (word: string, source?: string) => void
 }
 
 const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
@@ -15,6 +15,23 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
   const formatDateTime = (timestamp: string): string => {
     const date = new Date(timestamp)
     return date.toLocaleString()
+  }
+
+  const getCategoryIcon = (category: HistoryCategory): string => {
+    switch (category) {
+      case 'search':
+        return 'fas fa-search'
+      case 'link':
+        return 'fas fa-link'
+      case 'history-click':
+        return 'fas fa-clock-rotate-left'
+      case 'book':
+        return 'fas fa-book'
+      case 'random':
+        return 'fas fa-dice-five'
+      default:
+        return 'fas fa-search'
+    }
   }
 
   if (history.length === 0) {
@@ -31,8 +48,9 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({ onWordClick }) => {
           <div
             key={`${item.word}-${item.timestamp}`}
             className="search-history-item"
-            onClick={() => onWordClick(item.word)}
+            onClick={() => onWordClick(item.word, 'history')}
           >
+            <i className={`${getCategoryIcon(item.category)} history-icon`}></i>
             <span className="history-word">{formatWordForDisplay(item.word)}</span>
             <span className="history-timestamp">{formatDateTime(item.timestamp)}</span>
           </div>

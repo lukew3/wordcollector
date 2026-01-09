@@ -9,11 +9,14 @@ import Settings from '../../pages/Settings/Settings'
 import QueryResults from '../../pages/QueryResults/QueryResults'
 import SearchBar from '../../components/SearchBar/SearchBar'
 
-import { Definition, Database } from '../../interfaces'
+import { Definition, Database, SearchHistoryItem, HistoryCategory } from '../../interfaces'
+import { useAtom } from 'jotai'
+import { historyAtom } from '../../atoms'
 
 const AppContent = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
+  const [history, setHistory] = useAtom(historyAtom)
   
   const [error, setError] = useState<string>('')
   const [info, setInfo] = useState<string>('')
@@ -131,9 +134,29 @@ const AppContent = () => {
       .replace(/'/g, '&#039;')
   }
 
-  const handleWordClick = (word: string) => {
-    // Navigate to word route - QueryResults component will handle search
-    navigate(`/word/${encodeURIComponent(word)}`)
+  const handleWordClick = (word: string, source?: string) => {
+    // Determine category based on source
+    let category: HistoryCategory = 'link'
+    if (source === 'history') {
+      category = 'history-click'
+    }
+    
+    // Add to history with appropriate category when clicking from history/bookmarks/study
+    const newHistoryItem: SearchHistoryItem = {
+      word,
+      timestamp: new Date().toISOString(),
+      category
+    }
+    const newHistory = [newHistoryItem, ...history]
+    setHistory(newHistory)
+    
+    // Navigate to word route with category parameter to prevent duplicate history creation
+    const url = `/word/${encodeURIComponent(word)}`
+    if (source === 'history') {
+      navigate(`${url}?skipHistory=true`)
+    } else {
+      navigate(url)
+    }
   }
 
   return (

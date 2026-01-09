@@ -15,7 +15,10 @@ export interface Statement {
   reset: () => void
 }
 
+export type HistoryCategory = 'search' | 'link' | 'book' | 'random' | 'history-click'
+
 export interface SearchHistoryItem {
   word: string
   timestamp: string
+  category: HistoryCategory
 }

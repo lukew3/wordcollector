@@ -27,7 +27,7 @@ function SearchBar({ db, isLoading }: SearchBarProps) {
     const randomWords = getRandomWords(db, 1)
     if (randomWords.length > 0) {
       const randomWord = randomWords[0].word
-      navigate(`/word/${encodeURIComponent(randomWord)}`)
+      navigate(`/word/${encodeURIComponent(randomWord)}?category=random`)
     }
   }
 
