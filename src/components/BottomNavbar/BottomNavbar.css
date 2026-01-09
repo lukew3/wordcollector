@@ -6,10 +6,10 @@
    left: 0;
    right: 0;
    display: flex;
-   justify-content: space-around;
-   align-items: center;
    z-index: 1000;
- }
+   align-items: flex-start;
+   width: 100vw;
+  }
 
 .nav-item {
   display: flex;
@@ -35,7 +35,7 @@
 .nav-item.active {
   background-color: var(--color-navbar-active);
   height: 70px;
-  transform: translateY(-5px);
+  margin-top: -5px;
 }
 
 .nav-icon {
