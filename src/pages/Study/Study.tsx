@@ -4,7 +4,7 @@ import './Study.css'
 import { useAtom } from 'jotai'
 import { historyAtom } from '../../atoms'
 import { Definition, Database } from '../../interfaces'
-import { getDefinitionsForWord, getRandomWords } from '../../utils'
+import { getDefinitionsForWords, getRandomWords } from '../../utils'
 
 interface StudyProps {
   db: Database | null
@@ -23,23 +23,48 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
   const [currentCard, setCurrentCard] = useState<Definition | null>(null)
   const [isFlipped, setIsFlipped] = useState(false)
   const [allWords, setAllWords] = useState<Definition[]>([])
+  const [cachedWords, setCachedWords] = useState<Definition[]>([])
   const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [isInitializing, setIsInitializing] = useState(true)
 
   useEffect(() => {
-    // Load random words from database for random mode
-    const randomWords = getRandomWords(db, 100)
-    setAllWords(randomWords)
+    if (!db) return
+    
+    setIsInitializing(true)
+    
+    // Use cached words if available, otherwise generate new ones
+    if (cachedWords.length === 0) {
+      // Load fewer random words initially for faster startup
+      const randomWords = getRandomWords(db, 20)
+      setAllWords(randomWords)
+      
+      // Load additional words in background and cache them
+      setTimeout(() => {
+        const additionalWords = getRandomWords(db, 80)
+        const fullWordList = [...randomWords, ...additionalWords]
+        setAllWords(fullWordList)
+        setCachedWords(fullWordList)
+      }, 100)
+    } else {
+      // Use cached words for instant response
+      setAllWords(cachedWords)
+    }
+    
     loadNextCard()
-  }, [useHistory, history, db])
+    setIsInitializing(false)
+  }, [useHistory, history, db, cachedWords.length])
 
   const loadNextCard = () => {
     let wordsToUse: Definition[] = []
     
     if (useHistory && history.length > 0) {
-      // Get actual definitions for history words
+      // Get actual definitions for history words using batched query
       const historyWords: Definition[] = []
-      history.forEach(item => {
-        const definitions = getDefinitionsForWord(db, item.word)
+      const historyWordNames = history.map(item => item.word)
+      const wordDefinitionsMap = getDefinitionsForWords(db, historyWordNames)
+      
+      historyWordNames.forEach(word => {
+        const definitions = wordDefinitionsMap[word.toLowerCase()] || []
         if (definitions.length > 0) {
           // Select a random definition for this word
           const randomDefinition = definitions[Math.floor(Math.random() * definitions.length)]
@@ -113,27 +138,73 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
 
 
 
+  if (isInitializing) {
+    return (
+      <div className="study-container">
+        <div className="study-controls">
+          <div className="toggle-group">
+            <div className="toggle-container">
+              <span className="toggle-option align-right">Definition</span>
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={showWordFirst}
+                  onChange={(e) => handleShowWordFirstChange(e.target.checked)}
+                />
+                <span className="slider"></span>
+              </label>
+              <span className="toggle-option align-left">Word</span>
+            </div>
+            <div className="toggle-container">
+              <span className="toggle-option align-right">Random</span>
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={useHistory}
+                  onChange={(e) => handleUseHistoryChange(e.target.checked)}
+                />
+                <span className="slider"></span>
+              </label>
+                <span className="toggle-option align-left">History</span>
+            </div>
+          </div>
+        </div>
+        <div className="loading-state">
+          <p>Loading study content...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (!currentCard) {
     return (
       <div className="study-container">
         <div className="study-controls">
           <div className="toggle-group">
-            <label className="toggle-label">
-              <input
-                type="checkbox"
-                checked={showWordFirst}
-                onChange={(e) => handleShowWordFirstChange(e.target.checked)}
-              />
-              Show Word First
-            </label>
-            <label className="toggle-label">
-              <input
-                type="checkbox"
-                checked={useHistory}
-                onChange={(e) => handleUseHistoryChange(e.target.checked)}
-              />
-              Use History
-            </label>
+            <div className="toggle-container">
+              <span className="toggle-option align-right">Definition</span>
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={showWordFirst}
+                  onChange={(e) => handleShowWordFirstChange(e.target.checked)}
+                />
+                <span className="slider"></span>
+              </label>
+              <span className="toggle-option align-left">Word</span>
+            </div>
+            <div className="toggle-container">
+              <span className="toggle-option align-right">Random</span>
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={useHistory}
+                  onChange={(e) => handleUseHistoryChange(e.target.checked)}
+                />
+                <span className="slider"></span>
+              </label>
+                <span className="toggle-option align-left">History</span>
+            </div>
           </div>
         </div>
         <div className="no-cards">

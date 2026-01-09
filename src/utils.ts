@@ -101,6 +101,39 @@ export const getDefinitionsForWord = (db: Database | null, word: string): Defini
   }
 }
 
+export const getDefinitionsForWords = (db: Database | null, words: string[]): Record<string, Definition[]> => {
+  if (!db || words.length === 0) return {}
+  
+  try {
+    // Create a batch query using IN clause
+    const placeholders = words.map((_, index) => `$w${index}`).join(',')
+    const stmt = db.prepare(`SELECT word, pos, definition FROM "words" WHERE lower(word) IN (${placeholders});`)
+    
+    // Bind all words to the statement
+    const bindParams: Record<string, string> = {}
+    words.forEach((word, index) => {
+      bindParams[`$w${index}`] = word.toLowerCase()
+    })
+    stmt.bind(bindParams)
+    
+    // Group results by word
+    const results: Record<string, Definition[]> = {}
+    while(stmt.step()){
+      const row = stmt.getAsObject() as unknown as Definition
+      const word = row.word.toLowerCase()
+      if (!results[word]) {
+        results[word] = []
+      }
+      results[word].push(row)
+    }
+    stmt.reset()
+    return results
+  } catch(err) {
+    console.error('Error fetching definitions for words:', err)
+    return {}
+  }
+}
+
 export const getRandomWords = (db: Database | null, count: number = 50): Definition[] => {
   if (!db) return []
   
