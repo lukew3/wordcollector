@@ -21,6 +21,11 @@ body {
   padding-bottom: 100px; /* Add space for fixed bottom navbar */
 }
 
+/* Remove bottom padding for study page to prevent double spacing */
+.container:has(.study-container) {
+  padding-bottom: 0;
+}
+
 h1 {
   font-size: 1.4rem;
 }
