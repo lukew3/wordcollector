@@ -144,7 +144,6 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
         <div className="study-controls">
           <div className="toggle-group">
             <div className="toggle-container">
-              <span className="toggle-option align-right">Definition</span>
               <label className="toggle-switch">
                 <input
                   type="checkbox"
@@ -153,10 +152,11 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
                 />
                 <span className="slider"></span>
               </label>
-              <span className="toggle-option align-left">Word</span>
+              <span className="toggle-option-text">
+                <span className={`option ${!showWordFirst ? 'selected' : ''}`}>Definition</span> / <span className={`option ${showWordFirst ? 'selected' : ''}`}>Word</span>
+              </span>
             </div>
             <div className="toggle-container">
-              <span className="toggle-option align-right">Random</span>
               <label className="toggle-switch">
                 <input
                   type="checkbox"
@@ -165,7 +165,9 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
                 />
                 <span className="slider"></span>
               </label>
-                <span className="toggle-option align-left">History</span>
+              <span className="toggle-option-text">
+                <span className={`option ${!useHistory ? 'selected' : ''}`}>Random</span> / <span className={`option ${useHistory ? 'selected' : ''}`}>History</span>
+              </span>
             </div>
           </div>
         </div>
@@ -182,7 +184,6 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
         <div className="study-controls">
           <div className="toggle-group">
             <div className="toggle-container">
-              <span className="toggle-option align-right">Definition</span>
               <label className="toggle-switch">
                 <input
                   type="checkbox"
@@ -191,10 +192,11 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
                 />
                 <span className="slider"></span>
               </label>
-              <span className="toggle-option align-left">Word</span>
+              <span className="toggle-option-text">
+                <span className={`option ${!showWordFirst ? 'selected' : ''}`}>Definition</span> / <span className={`option ${showWordFirst ? 'selected' : ''}`}>Word</span>
+              </span>
             </div>
             <div className="toggle-container">
-              <span className="toggle-option align-right">Random</span>
               <label className="toggle-switch">
                 <input
                   type="checkbox"
@@ -203,7 +205,9 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
                 />
                 <span className="slider"></span>
               </label>
-                <span className="toggle-option align-left">History</span>
+              <span className="toggle-option-text">
+                <span className={`option ${!useHistory ? 'selected' : ''}`}>Random</span> / <span className={`option ${useHistory ? 'selected' : ''}`}>History</span>
+              </span>
             </div>
           </div>
         </div>
@@ -216,34 +220,36 @@ const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
 
   return (
     <div className="study-container">
-      <div className="study-controls">
-        <div className="toggle-group">
-          <div className="toggle-container">
-            <span className="toggle-option align-right">Definition</span>
-            <label className="toggle-switch">
-              <input
-                type="checkbox"
-                checked={showWordFirst}
-                onChange={(e) => handleShowWordFirstChange(e.target.checked)}
-              />
-              <span className="slider"></span>
-            </label>
-            <span className="toggle-option align-left">Word</span>
-          </div>
-          <div className="toggle-container">
-            <span className="toggle-option align-right">Random</span>
-            <label className="toggle-switch">
-              <input
-                type="checkbox"
-                checked={useHistory}
-                onChange={(e) => handleUseHistoryChange(e.target.checked)}
-              />
-              <span className="slider"></span>
-            </label>
-              <span className="toggle-option align-left">History</span>
+        <div className="study-controls">
+          <div className="toggle-group">
+            <div className="toggle-container">
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={showWordFirst}
+                  onChange={(e) => handleShowWordFirstChange(e.target.checked)}
+                />
+                <span className="slider"></span>
+              </label>
+              <span className="toggle-option-text">
+                <span className={`option ${!showWordFirst ? 'selected' : ''}`}>Definition</span> / <span className={`option ${showWordFirst ? 'selected' : ''}`}>Word</span>
+              </span>
+            </div>
+            <div className="toggle-container">
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={useHistory}
+                  onChange={(e) => handleUseHistoryChange(e.target.checked)}
+                />
+                <span className="slider"></span>
+              </label>
+              <span className="toggle-option-text">
+                <span className={`option ${!useHistory ? 'selected' : ''}`}>Random</span> / <span className={`option ${useHistory ? 'selected' : ''}`}>History</span>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
       <div className="flashcard-container">
         <div 

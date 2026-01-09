@@ -18,29 +18,26 @@
 }
 
 .toggle-container {
-  gap: 0.5rem;
-}
-
-.toggle-container {
   display: flex;
   align-items: center;
   gap: 1rem;
   justify-content: center;
 }
 
-.toggle-option {
+.toggle-option-text {
   font-size: 0.9rem;
   color: var(--color-text-muted);
-  min-width: 80px;
-  text-align: center;
 }
 
-.align-left {
-  text-align: left;
+.toggle-option-text .option {
+  font-weight: normal;
+  text-decoration: none;
 }
 
-.align-right {
-  text-align: right;
+.toggle-option-text .option.selected {
+  font-weight: bold;
+  text-decoration: underline;
+  color: var(--color-text-primary);
 }
 
 .toggle-switch {
@@ -256,18 +253,18 @@ input:checked + .slider:before {
 /* Responsive design */
 @media (max-width: 430px) {
   .toggle-group {
-    justify-content: center;
+    justify-content: flex-start;
     gap: 1rem;
   }
   
   .toggle-container {
     max-width: 280px;
     gap: 0.5rem;
+    justify-content: flex-start;
   }
   
-  .toggle-option {
+  .toggle-option-text {
     font-size: 0.85rem;
-    min-width: 70px;
   }
   
   .toggle-switch {
@@ -308,7 +305,7 @@ input:checked + .slider:before {
   }
   
   .toggle-group {
-    justify-content: center;
+    justify-content: flex-start;
     gap: 1rem;
   }
   
@@ -317,9 +314,8 @@ input:checked + .slider:before {
     gap: 0.5rem;
   }
   
-  .toggle-option {
+  .toggle-option-text {
     font-size: 0.8rem;
-    min-width: 100px;
   }
   
   .toggle-switch {
