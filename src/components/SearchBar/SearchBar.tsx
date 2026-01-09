@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Database } from '../../interfaces'
+import { getRandomWords } from '../../utils'
 
 interface SearchBarProps {
   db: Database | null
@@ -20,6 +21,16 @@ function SearchBar({ db, isLoading }: SearchBarProps) {
     setLocalQuery('')
   }
 
+  const handleRandomSearch = async (): Promise<void> => {
+    if (!db) return
+
+    const randomWords = getRandomWords(db, 1)
+    if (randomWords.length > 0) {
+      const randomWord = randomWords[0].word
+      navigate(`/word/${encodeURIComponent(randomWord)}`)
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <input
@@ -30,6 +41,15 @@ function SearchBar({ db, isLoading }: SearchBarProps) {
         required
       />
       <button type="submit" disabled={isLoading}>Search</button>
+      <button 
+        type="button" 
+        onClick={handleRandomSearch}
+        disabled={isLoading}
+        title="Random word"
+        aria-label="Search for a random word"
+      >
+        <i className="fas fa-dice-five"></i>
+      </button>
     </form>
   )
 }
