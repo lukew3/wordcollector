@@ -43,24 +43,15 @@ self.addEventListener('fetch', (event) => {
   const request = event.request;
   const url = new URL(request.url);
 
-  if (url.pathname === '/wordnetFull.db') {
+  if (url.pathname.endsWith('.db')) {
     event.respondWith(
       caches.open(DB_CACHE_NAME)
         .then((dbCache) => {
           return dbCache.match(request)
             .then((cachedResponse) => {
               if (cachedResponse) {
-                return fetch(request)
-                  .then((networkResponse) => {
-                    if (networkResponse.ok) {
-                      dbCache.put(request, networkResponse.clone());
-                      return networkResponse;
-                    }
-                    return cachedResponse;
-                  })
-                  .catch(() => cachedResponse);
+                return cachedResponse;
               }
-              
               return fetch(request)
                 .then((networkResponse) => {
                   if (networkResponse.ok) {
