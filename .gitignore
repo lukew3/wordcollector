@@ -5,3 +5,7 @@ dist/
 build/
 
 tasks.md
+
+# Local overrides
+*.local.*
+*.local
