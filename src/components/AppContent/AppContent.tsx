@@ -11,12 +11,17 @@ import SearchBar from '../../components/SearchBar/SearchBar'
 
 import { Definition, Database, SearchHistoryItem, HistoryCategory } from '../../interfaces'
 import { useAtom } from 'jotai'
-import { historyAtom } from '../../atoms'
+import { historyAtom, databasesAtom, activeDatabaseAtom } from '../../atoms'
+import { isDatabaseCached } from '../../cacheUtils'
+
 
 const AppContent = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const [history, setHistory] = useAtom(historyAtom)
+  const [databases, setDatabases] = useAtom(databasesAtom)
+  const [activeDatabase, setActiveDatabase] = useAtom(activeDatabaseAtom)
+  
   
   const [error, setError] = useState<string>('')
   const [info, setInfo] = useState<string>('')
@@ -28,9 +33,56 @@ const AppContent = () => {
 
   const activeTab = window.location.pathname.slice(1) || 'history'
 
+  // Reconcile metadata with actual cache state on startup
+  useEffect(() => {
+    const syncCacheState = async () => {
+      const updatedDatabases = await Promise.all(
+        databases.map(async (dbInfo) => {
+          const cached = await isDatabaseCached(dbInfo.filename)
+          if (dbInfo.downloaded && !cached) {
+            return { ...dbInfo, downloaded: false, enabled: false, lastUpdated: undefined }
+          }
+          if (!dbInfo.downloaded && cached) {
+            return { ...dbInfo, downloaded: true, enabled: true, lastUpdated: new Date().toISOString() }
+          }
+          return dbInfo
+        })
+      )
+      const changed = updatedDatabases.some((dbInfo, i) => dbInfo !== databases[i])
+      if (changed) {
+        setDatabases(updatedDatabases)
+      }
+    }
+    syncCacheState()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   useEffect(() => {
     loadDatabase()
   }, [])
+
+  // Sync database state when it loads successfully
+  useEffect(() => {
+    if (db && !isLoading) {
+      // Mark wordnetFull.db as downloaded if database is loaded
+      const wordnetDb = databases.find(db => db.filename === 'wordnetFull.db')
+      if (wordnetDb && !wordnetDb.downloaded) {
+        const updatedDatabases = databases.map(db => 
+          db.filename === 'wordnetFull.db' 
+            ? { ...db, downloaded: true, enabled: true, lastUpdated: new Date().toISOString() }
+            : db
+        )
+        setDatabases(updatedDatabases)
+        
+        // Set as active database if not already set
+        if (!activeDatabase) {
+          setActiveDatabase('wordnet-full')
+        }
+      }
+    }
+  }, [db, isLoading, databases, activeDatabase])
+
+  
 
   // Handle legacy query parameter - redirect to word route if needed
   useEffect(() => {
@@ -51,48 +103,31 @@ const AppContent = () => {
 
       setProgress(10)
 
-      let buffer: Uint8Array
+      const res = await fetch('wordnetFull.db')
+      if (!res.ok) throw new Error('Failed to fetch wordnet.db: ' + res.status)
 
-      try {
-        const cacheResponse = await caches.match('wordnetFull.db')
-        if (cacheResponse) {
-          const cachedArrayBuffer = await cacheResponse.arrayBuffer()
-          const tempBuffer = new Uint8Array(cachedArrayBuffer)
-          buffer = new Uint8Array(tempBuffer.length)
-          buffer.set(tempBuffer)
-          setProgress(80)
-        } else {
-          throw new Error('Database not in cache')
-        }
-      } catch (cacheError) {
-        setProgress(20)
+      const contentLength = res.headers.get('content-length')
+      const total = contentLength ? parseInt(contentLength, 10) : 0
+      let loaded = 0
 
-        const res = await fetch('wordnetFull.db')
-        if (!res.ok) throw new Error('Failed to fetch wordnet.db: ' + res.status)
+      const reader = res.body!.getReader()
+      const chunks: Uint8Array[] = []
 
-        const contentLength = res.headers.get('content-length')
-        const total = contentLength ? parseInt(contentLength, 10) : 0
-        let loaded = 0
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
 
-        const reader = res.body!.getReader()
-        const chunks: Uint8Array[] = []
+        chunks.push(value)
+        loaded += value.length
+        const percent = total > 0 ? Math.min((loaded / total) * 60 + 20, 80) : Math.min(loaded / 1000000 * 10 + 20, 80)
+        setProgress(percent)
+      }
 
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
-
-          chunks.push(value)
-          loaded += value.length
-          const percent = total > 0 ? Math.min((loaded / total) * 60 + 20, 80) : Math.min(loaded / 1000000 * 10 + 20, 80)
-          setProgress(percent)
-        }
-
-        buffer = new Uint8Array(loaded)
-        let offset = 0
-        for (const chunk of chunks) {
-          buffer.set(chunk, offset)
-          offset += chunk.length
-        }
+      const buffer = new Uint8Array(loaded)
+      let offset = 0
+      for (const chunk of chunks) {
+        buffer.set(chunk, offset)
+        offset += chunk.length
       }
 
       setProgress(90)
@@ -201,7 +236,7 @@ const AppContent = () => {
         <Route path="/" element={<SearchHistory onWordClick={handleWordClick} />} />
         <Route path="/history" element={<SearchHistory onWordClick={handleWordClick} />} />
         <Route path="/bookmarks" element={<Bookmarks onWordClick={handleWordClick} />} />
-        <Route path="/study" element={<Study db={db} onWordClick={handleWordClick} />} />
+        <Route path="/study" element={<Study db={db} />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/word/:word" element={
           <QueryResults

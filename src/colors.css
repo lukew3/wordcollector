@@ -50,4 +50,14 @@
   /* Brand Colors (if expanding in future) */
   --color-brand-primary: #8B7355;      /* Main brand color */
   --color-brand-secondary: #A0916B;    /* Secondary brand color */
+
+  /* Database Manager Custom Variables */
+  --background-primary: #ffffff;
+  --background-secondary: #f5f5f5;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --accent-brown: #8B7355;
+  --accent-dark: #6d5a44;
+  --accent-light: #f0ebe4;
+  --border-light: #e0e0e0;
 }

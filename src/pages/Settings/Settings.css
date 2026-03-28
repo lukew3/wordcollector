@@ -37,24 +37,3 @@
   cursor: not-allowed;
 }
 
-.cache-section {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid var(--color-neutral-border);
-}
-
-.cache-section h4 {
-  margin: 0 0 8px 0;
-  font-size: 1rem;
-  color: var(--color-text-main);
-}
-
-.cache-info {
-  margin-bottom: 12px;
-}
-
-.cache-info p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-}

@@ -17,7 +17,7 @@ const DefinitionComponent = ({
     const [bookmarks, setBookmarks] = useAtom(bookmarksAtom)
     const [isBookmarked, setIsBookmarked] = useState(checkBookmarked(bookmarks, definition.word, definition.definition))
 
-    const toggleBookmark = (word: string, pos: string, definition: string) => {
+    const toggleBookmark = (word: string, definition: string) => {
         setBookmarks(isBookmarked ? removeBookmark(bookmarks, word, definition) : addBookmark(bookmarks, word, definition))
         setIsBookmarked(!isBookmarked)
     }
@@ -34,7 +34,7 @@ const DefinitionComponent = ({
             </div>
             <button
             className="bookmarkBtn"
-            onClick={() => toggleBookmark(definition.word, definition.pos, definition.definition)}
+            onClick={() => toggleBookmark(definition.word, definition.definition)}
             aria-label={isBookmarked ? "Remove bookmark" : "Add bookmark"}
             >
             <i className={getBookmarkIcon()}></i>

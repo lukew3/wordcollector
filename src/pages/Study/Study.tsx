@@ -8,10 +8,9 @@ import { getDefinitionsForWords, getRandomWords, formatWordForDisplay } from '..
 
 interface StudyProps {
   db: Database | null
-  onWordClick?: (word: string) => void
 }
 
-const Study: React.FC<StudyProps> = ({ db, onWordClick }) => {
+const Study: React.FC<StudyProps> = ({ db }) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const [history, setHistory] = useAtom(historyAtom)

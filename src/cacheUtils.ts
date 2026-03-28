@@ -1,49 +1,66 @@
-export const clearDatabaseCache = async (): Promise<void> => {
+const DB_CACHE_NAME = 'offline-dictionary-db-v1'
+
+export const downloadDatabase = async (
+  filename: string,
+  onProgress?: (loaded: number, total: number, percentage: number) => void
+): Promise<void> => {
   try {
-    const cacheNames = await caches.keys()
-    const dbCacheName = 'offline-dictionary-db-v1'
-    
-    for (const cacheName of cacheNames) {
-      if (cacheName === dbCacheName) {
-        await caches.delete(cacheName)
-        console.log('Database cache cleared')
-        break
+    const response = await fetch(filename)
+
+    if (!response.ok) {
+      throw new Error(`Failed to download database: ${response.statusText}`)
+    }
+
+    const contentLength = response.headers.get('content-length')
+    const total = contentLength ? parseInt(contentLength, 10) : 0
+    let loaded = 0
+
+    const reader = response.body?.getReader()
+    if (!reader) {
+      throw new Error('Response body is not readable')
+    }
+
+    const chunks: Uint8Array[] = []
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      chunks.push(value)
+      loaded += value.length
+
+      if (onProgress && total > 0) {
+        onProgress(loaded, total, Math.round((loaded / total) * 100))
       }
     }
+
+    // Reconstruct buffer and store in Cache API
+    const buffer = new Uint8Array(loaded)
+    let offset = 0
+    for (const chunk of chunks) {
+      buffer.set(chunk, offset)
+      offset += chunk.length
+    }
+
+    const cache = await caches.open(DB_CACHE_NAME)
+    const cachedResponse = new Response(buffer, {
+      headers: { 'Content-Type': 'application/x-sqlite3' }
+    })
+    await cache.put(new Request('/' + filename), cachedResponse)
+
+    console.log(`Database download completed: ${filename}`)
   } catch (error) {
-    console.error('Error clearing database cache:', error)
+    console.error('Error downloading database:', error)
     throw error
   }
 }
 
-export const getDatabaseCacheInfo = async (): Promise<{ cached: boolean; size?: number }> => {
-  try {
-    const cacheResponse = await caches.match('wordnetFull.db')
-    if (cacheResponse) {
-      const contentLength = cacheResponse.headers.get('content-length')
-      return {
-        cached: true,
-        size: contentLength ? parseInt(contentLength, 10) : undefined
-      }
-    }
-    return { cached: false }
-  } catch (error) {
-    console.error('Error checking database cache info:', error)
-    return { cached: false }
-  }
+export const deleteDatabaseFromCache = async (filename: string): Promise<boolean> => {
+  const cache = await caches.open(DB_CACHE_NAME)
+  return cache.delete(new Request('/' + filename))
 }
 
-export const forceRefreshDatabase = async (): Promise<void> => {
-  try {
-    await clearDatabaseCache()
-    const cache = await caches.open('offline-dictionary-db-v1')
-    const response = await fetch('wordnetFull.db')
-    if (response.ok) {
-      await cache.put('wordnetFull.db', response)
-      console.log('Database cache refreshed')
-    }
-  } catch (error) {
-    console.error('Error refreshing database cache:', error)
-    throw error
-  }
+export const isDatabaseCached = async (filename: string): Promise<boolean> => {
+  const cache = await caches.open(DB_CACHE_NAME)
+  const response = await cache.match(new Request('/' + filename))
+  return !!response
 }

@@ -22,3 +22,21 @@ export interface SearchHistoryItem {
   timestamp: string
   category: HistoryCategory
 }
+
+export interface DatabaseInfo {
+  id: string
+  name: string
+  url: string
+  filename: string
+  size: string
+  description: string
+  downloaded: boolean
+  enabled: boolean
+  lastUpdated?: string
+}
+
+export interface DownloadProgress {
+  loaded: number
+  total: number
+  percentage: number
+}
