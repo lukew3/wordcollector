@@ -4,10 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-- **Dev server**: `npm run dev` (Vite on port 3000)
-- **Build**: `npm run build`
-- **Preview**: `npm run preview`
-- **Type check**: `npx tsc --noEmit`
+- **Dev server**: `bun run dev` (Vite on port 3000)
+- **Build**: `bun run build`
+- **Preview**: `bun run preview`
+- **Type check**: `bunx tsc --noEmit`
 - No test framework configured
 
 ## Architecture
@@ -35,4 +35,4 @@ Offline-first dictionary PWA built with React 18 + TypeScript + Vite. Users sear
 
 - The SW cache name `offline-dictionary-db-v1` is used in both `sw.js` and `cacheUtils.ts` as a string literal (SW is plain JS, can't share imports).
 - `tsconfig.json` has `noUnusedLocals` and `noUnusedParameters` enabled — prefix unused params with `_`.
-- The codebase should have zero TS errors — run `npx tsc --noEmit` to verify.
+- The codebase should have zero TS errors — run `bunx tsc --noEmit` to verify.
