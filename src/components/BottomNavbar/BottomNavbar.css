@@ -1,0 +1,77 @@
+@import '../../colors.css';
+
+.bottom-navbar {
+   position: fixed;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   display: flex;
+   z-index: 1000;
+   align-items: flex-start;
+   width: 100vw;
+  }
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-top: 2px solid var(--color-neutral-border);
+  border-left: 2px solid var(--color-neutral-border);
+  border-right: 2px solid var(--color-neutral-border);
+  border-radius: 8px 8px 0 0;
+  transition: all 0.3s ease;
+  flex: 1;
+  background-color: var(--color-navbar-bg);
+  height: 60px;
+}
+
+.nav-item:hover {
+  background-color: var(--color-navbar-hover);
+}
+
+.nav-item.active {
+  background-color: var(--color-navbar-active);
+  height: 70px;
+  margin-top: -5px;
+}
+
+.nav-icon {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+  color: var(--color-text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.nav-label {
+  font-size: 0.75rem;
+  color: var(--color-text-main);
+  text-align: center;
+  font-family: "JetBrains Mono", monospace;
+  white-space: nowrap;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+
+  .nav-item {
+    min-width: 50px;
+    padding: 6px 8px;
+  }
+
+  .nav-icon {
+    font-size: 1.25rem;
+    width: 20px;
+    height: 20px;
+  }
+
+  .nav-label {
+    font-size: 0.7rem;
+  }
+}

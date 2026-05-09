@@ -1,0 +1,39 @@
+{
+  "name": "wordcollector",
+  "version": "1.0.0",
+  "description": "A limitless free dictionary in your browser, offline",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukew3/wordcollector.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lukew3/wordcollector/issues"
+  },
+  "homepage": "https://github.com/lukew3/wordcollector#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.1.0",
+    "cli-progress": "^3.12.0",
+    "jotai": "^2.16.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.12.0",
+    "sql.js": "^1.8.0",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/sql.js": "^1.4.4",
+    "@vitejs/plugin-react": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^4.4.0"
+  }
+}

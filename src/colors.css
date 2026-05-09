@@ -1,0 +1,63 @@
+/* Color Variables for Aard2 Web Dictionary */
+/* Organized by purpose and usage */
+
+:root {
+  /* Primary Colors - Main UI Elements */
+  --color-primary-bg: #B1A187;        /* Main background */
+  --color-primary-button: #D3BF95;     /* Primary buttons and inputs */
+  --color-primary-accent: #917d61;     /* Definition items, cards */
+
+  /* Secondary Colors - Hover and Active States */
+  --color-secondary-hover: #c4a876;    /* Button hover states */
+  --color-secondary-card-hover: #b0956f; /* Card hover states */
+  --color-navbar-bg: #D2BB9A;          /* Bottom navbar background */
+  --color-navbar-hover: #b9a88c;       /* Navbar item hover */
+  --color-navbar-active: #BE9C6D;      /* Navbar active state */
+
+  /* Text Colors */
+  --color-text-primary: #000000;       /* Main text, headings */
+  --color-text-secondary: #444;        /* Secondary text like meta */
+  --color-text-muted: #666;            /* Muted text like info */
+  --color-text-subtle: #808080;        /* Very subtle text */
+
+  /* Status Colors */
+  --color-success: #2e7d32;            /* Success states, progress - deeper green */
+  --color-success-light: #66bb6a;      /* Lighter success for gradients */
+  --color-error: #b00020;              /* Error messages */
+  --color-warning: #ff9800;            /* Warning states (if needed) */
+
+  /* Neutral Colors */
+  --color-neutral-light: #e0e0e0;      /* Light backgrounds, borders */
+  --color-neutral-border: #000000;     /* Primary borders */
+  --color-overlay-light: rgba(0, 0, 0, 0.1);  /* Light overlays for hover */
+
+  /* Background Colors */
+  --color-bg-body: var(--color-primary-bg);
+  --color-bg-input: var(--color-primary-button);
+  --color-bg-button: var(--color-primary-button);
+  --color-bg-card: var(--color-primary-accent);
+  --color-bg-progress: var(--color-neutral-light);
+
+  /* Text Color Variables */
+  --color-text-main: var(--color-text-primary);
+  --color-text-meta: var(--color-text-secondary);
+  --color-text-info: var(--color-text-muted);
+
+  /* Interactive Colors */
+  --color-hover-bg: var(--color-secondary-hover);
+  --color-hover-overlay: var(--color-overlay-light);
+
+  /* Brand Colors (if expanding in future) */
+  --color-brand-primary: #8B7355;      /* Main brand color */
+  --color-brand-secondary: #A0916B;    /* Secondary brand color */
+
+  /* Database Manager Custom Variables */
+  --background-primary: #ffffff;
+  --background-secondary: #f5f5f5;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --accent-brown: #8B7355;
+  --accent-dark: #6d5a44;
+  --accent-light: #f0ebe4;
+  --border-light: #e0e0e0;
+}

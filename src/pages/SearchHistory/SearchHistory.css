@@ -1,0 +1,59 @@
+@import '../../colors.css';
+
+/* Search History Component Styles */
+
+.search-history {
+  margin-top: 18px;
+ }
+
+.search-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.search-history-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.search-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.search-history-item {
+  background-color: var(--color-bg-card);
+  padding: 10px 12px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  gap: 8px;
+}
+
+.search-history-item:hover {
+  background-color: var(--color-secondary-card-hover);
+}
+
+.history-icon {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  width: 16px;
+  text-align: center;
+}
+
+.history-word {
+  font-weight: bold;
+  flex: 1;
+}
+
+.history-timestamp {
+  font-size: 0.8rem;
+  text-align: right;
+  min-width: 150px;
+}

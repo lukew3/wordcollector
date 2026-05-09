@@ -1,0 +1,342 @@
+.study-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.study-controls {
+  margin-bottom: 1rem;
+}
+
+.toggle-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.toggle-option-text {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.toggle-option-text .option {
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.toggle-option-text .option.selected {
+  font-weight: bold;
+  text-decoration: underline;
+  color: var(--color-text-primary);
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  --switch-width: 60px;
+  --switch-height: 34px;
+  --thumb-size: 26px;
+  --thumb-offset: 4px;
+  --move-distance: calc(var(--switch-width) - var(--thumb-size) - (2 * var(--thumb-offset)));
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbb388;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: var(--thumb-size);
+  width: var(--thumb-size);
+  left: var(--thumb-offset);
+  bottom: var(--thumb-offset);
+  background-color: var(--color-primary-accent);
+  transition: .4s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .slider {
+  background-color: var(--color-primary-accent);
+}
+
+input:checked + .slider:before {
+  transform: translateX(var(--move-distance));
+  background-color: var(--color-bg-body);
+}
+
+.flashcard-container {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 200px;
+  max-height: 400px;
+  margin: 5rem 0;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+  -moz-perspective: 1000px;
+  -ms-perspective: 1000px;
+  perspective-origin: center center;
+  -webkit-perspective-origin: center center;
+  -moz-perspective-origin: center center;
+  -ms-perspective-origin: center center;
+}
+
+.flashcard {
+  width: 400px;
+  height: 250px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transition: transform 0.6s;
+  -webkit-transition: -webkit-transform 0.6s;
+  -moz-transition: -moz-transform 0.6s;
+  -ms-transition: -ms-transform 0.6s;
+  cursor: pointer;
+  transform-origin: center center;
+  -webkit-transform-origin: center center;
+  -moz-transform-origin: center center;
+  -ms-transform-origin: center center;
+}
+
+.flashcard.flipped {
+  transform: translate(-50%, -50%) rotateX(180deg);
+  -webkit-transform: translate(-50%, -50%) rotateX(180deg);
+  -moz-transform: translate(-50%, -50%) rotateX(180deg);
+  -ms-transform: translate(-50%, -50%) rotateX(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background: var(--color-bg-card);
+  color: var(--color-text-primary);
+}
+
+.flashcard-back {
+  transform: rotateX(180deg);
+  -webkit-transform: rotateX(180deg);
+  -moz-transform: rotateX(180deg);
+  -ms-transform: rotateX(180deg);
+  background: var(--color-primary-button);
+  color: var(--color-text-primary);
+}
+
+.card-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.word {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.pos {
+  font-size: 1rem;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+.definition {
+  font-size: 1.2rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.flashcard-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.control-button {
+  padding: 0.75rem 2rem;
+  border: 1px solid var(--color-neutral-border);
+  border-radius: 8px;
+  background: var(--color-bg-button);
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.control-button:hover {
+  background: var(--color-hover-bg);
+}
+
+.control-button:active {
+  transform: scale(0.98);
+}
+
+.no-cards {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+  overflow: hidden;
+}
+
+.loading-state {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+  animation: pulse 1.5s ease-in-out infinite;
+  overflow: hidden;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 430px) {
+  .toggle-group {
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  
+  .toggle-container {
+    max-width: 280px;
+    gap: 0.5rem;
+    justify-content: flex-start;
+  }
+  
+  .toggle-option-text {
+    font-size: 0.85rem;
+  }
+  
+  .toggle-switch {
+    width: 44px;
+    height: 24px;
+    --switch-width: 44px;
+    --switch-height: 24px;
+    --thumb-size: 18px;
+    --thumb-offset: 3px;
+    --move-distance: calc(var(--switch-width) - var(--thumb-size) - (2 * var(--thumb-offset)));
+  }
+  
+  .slider {
+    border-radius: 24px;
+  }
+  
+  .slider:before {
+    border-radius: 50%;
+  }
+}
+
+
+
+@media (max-width: 480px) {
+  .flashcard {
+    width: 90%;
+    max-width: 350px;
+    height: 200px;
+  }
+  
+  .word {
+    font-size: 1.5rem;
+  }
+  
+  .definition {
+    font-size: 1rem;
+  }
+  
+  .toggle-group {
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  
+  .toggle-container {
+    max-width: 250px;
+    gap: 0.5rem;
+  }
+  
+  .toggle-option-text {
+    font-size: 0.8rem;
+  }
+  
+  .toggle-switch {
+    width: 40px;
+    height: 22px;
+    --switch-width: 40px;
+    --switch-height: 22px;
+    --thumb-size: 16px;
+    --thumb-offset: 3px;
+    --move-distance: calc(var(--switch-width) - var(--thumb-size) - (2 * var(--thumb-offset)));
+  }
+  
+  .slider {
+    border-radius: 22px;
+  }
+  
+  .slider:before {
+    border-radius: 50%;
+  }
+}

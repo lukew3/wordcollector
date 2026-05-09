@@ -1,0 +1,154 @@
+.database-manager {
+  margin: 20px 0;
+  background: var(--color-bg-button);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--color-neutral-border);
+}
+
+.database-manager h3 {
+  margin-bottom: 15px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.database-manager h3 i {
+  color: var(--accent-brown);
+}
+
+.no-databases {
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 20px;
+  text-align: center;
+  background: transparent;
+  border: 1px solid var(--color-neutral-border);
+  border-radius: 8px;
+}
+
+.database-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.database-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: transparent;
+  border: 1px solid var(--color-neutral-border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.database-item:hover {
+  border-color: var(--accent-brown);
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);
+}
+
+.database-info {
+  flex: 1;
+}
+
+.database-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.database-details {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.database-size {
+  color: var(--accent-brown);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.database-updated {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.database-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.delete-btn {
+  background: none;
+  border: 1px solid var(--color-neutral-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+}
+
+.delete-btn:hover {
+  background: #fee;
+  border-color: #fcc;
+  color: #c33;
+}
+
+.delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.delete-btn i {
+  color: var(--text-secondary);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: transparent;
+  border: 1px solid var(--color-neutral-border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 12px;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent-brown);
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  text-align: center;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .database-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .database-controls {
+    justify-content: flex-end;
+  }
+  
+  .database-details {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}

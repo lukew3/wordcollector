@@ -1,0 +1,11 @@
+node_modules
+
+# Build output
+dist/
+build/
+
+tasks.md
+
+# Local overrides
+*.local.*
+*.local

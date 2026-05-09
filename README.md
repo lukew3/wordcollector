@@ -1,2 +1,4 @@
 # wordcollector
-A free and offline dictionary in your browser
+A limitless free dictionary in your browser, offline
+
+Dictionary from https://github.com/JakeSteam/WordNetToSQLite/tree/main
